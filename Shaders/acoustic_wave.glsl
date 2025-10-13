@@ -28,7 +28,7 @@ layout(push_constant, std430) uniform Params {
     float _padding;
 } params;
 
-const float C = 343.0; // m/s of soundwaves
+const float C = 1.0; // m/s of soundwaves
 const float AIR_DENSITY = 1.225; // kg/m^3
 const float DX = 1.0; // Grid spacing (normalized)
 const float DT = .001; // Time step
@@ -74,9 +74,10 @@ void main() {
     
     // Laplacian (second derivative)
     float laplacian = p_left + p_right + p_top + p_bottom - 4.0 * p_center;
+    float laplacian_scaled = (C * C * DT * DT / (DX * DX)) * laplacian;
     
     // Wave equation update
-    float new_pressure = p_center + C * C * laplacian;
+    float new_pressure = 2 * p_center - pressure_new[index] + C * C * laplacian_scaled;
     
     // Apply damping
     new_pressure *= (1.0 - DAMPING);
