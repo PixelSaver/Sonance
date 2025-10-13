@@ -195,7 +195,7 @@ func run_compute_shader():
 	rd.sync()
 
 func read_data_from_gpu():
-	var buffer_to_read = buffer_p_a if use_a_as_input else buffer_p_b
+	var buffer_to_read = buffer_p_b if use_a_as_input else buffer_p_a
 	var output_bytes = rd.buffer_get_data(buffer_to_read)
 	pressure_data_a = output_bytes.to_float32_array()
 	use_a_as_input = !use_a_as_input

@@ -86,12 +86,7 @@ void main() {
     // // Add a oscillating source to see stuff change
     ivec2 source_pos = ivec2(params.grid_width / 2, params.grid_height / 2);
     if (pos == source_pos) {
-        // Sine wave source
-        float frequency = .5;  // Hz (in simulation time)
-        float amplitude = 1.;
-        float source_signal = amplitude * sin(2.0 * 3.14159 * frequency * params.time);
-        test_pressure = source_signal;
-        // test_pressure = 2.;
+     test_pressure = 1.;
     }
     
     
