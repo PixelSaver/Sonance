@@ -11,6 +11,9 @@ var buffer: RID
 var uniform_set: RID
 
 var grid_data: PackedFloat32Array
+var pressure_data: PackedFloat32Array
+var vel_x_data: PackedFloat32Array
+var vel_y_data: PackedFloat32Array
 
 # QoL stuff
 var position_offset : Vector2
@@ -38,11 +41,21 @@ func _ready() -> void:
 	
 	# Passing in information to the shader
 	# Called uniforms in glsl i think
-	var uniform = RDUniform.new()
-	uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform.binding = 0 # needs to match the "binding" in shader file (from docs)
-	uniform.add_id(buffer)
-	uniform_set = rd.uniform_set_create([uniform], shader, 0)
+	var uniform0 = RDUniform.new()
+	uniform0.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform0.binding = 0 # needs to match the "binding" in shader file (from docs)
+	uniform0.add_id(buffer)
+	uniform_set = rd.uniform_set_create([uniform0], shader, 0)
+	var uniform1 = RDUniform.new()
+	uniform1.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform1.binding = 1
+	uniform1.add_id(buffer)
+	uniform_set = rd.uniform_set_create([uniform1], shader, 1)
+	var uniform2 = RDUniform.new()
+	uniform2.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform2.binding = 2
+	uniform2.add_id(buffer)
+	uniform_set = rd.uniform_set_create([uniform2], shader, 2)
 	
 	# QoL stuff
 	position_offset = get_viewport_rect().size / 2
@@ -109,3 +122,12 @@ func _draw() -> void:
 			
 			var rect = Rect2(x * CELL_SIZE + position_offset.x, y * CELL_SIZE + position_offset.y, CELL_SIZE - 1, CELL_SIZE - 1)
 			draw_rect(rect, color)
+
+# Cleanup just in case
+func _exit_tree():
+	if rd:
+		rd.free_rid(buffer)
+		rd.free_rid(uniform_set)
+		rd.free_rid(pipeline)
+		rd.free_rid(shader)
+		rd.free()
