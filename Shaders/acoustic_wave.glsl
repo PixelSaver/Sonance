@@ -82,15 +82,13 @@ void main() {
     // Apply damping
     new_pressure *= (1.0 - DAMPING);
     
-    float test_pressure = 0.;
-    
     // // Add a oscillating source to see stuff change
     ivec2 source_pos = ivec2(params.grid_width / 2, params.grid_height / 2);
     if (pos == source_pos) {
-     test_pressure = 1.;
+        new_pressure += sin(2.0 * 3.14159 * 440.0 * params.time);
     }
     
     
-    pressure_new[index] = new_pressure + test_pressure;
+    pressure_new[index] = new_pressure;
     
 }
