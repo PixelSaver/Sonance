@@ -108,7 +108,8 @@ func _process(delta: float) -> void:
 		var frame_time = 1.0 / max_fps
 		time_accumulator += delta
 		
-		while time_accumulator >= frame_time:
+		#while time_accumulator >= frame_time:
+		if true:
 			run_compute_shader()
 			read_data_from_gpu()
 			time_accumulator -= frame_time
@@ -155,7 +156,10 @@ func run_compute_shader():
 	push_constant.resize(16)
 	push_constant.encode_s32(0, GRID_SIZE.x)
 	push_constant.encode_s32(4, GRID_SIZE.y)
-	push_constant.encode_float(8, Time.get_ticks_msec())
+	var time_seconds = fmod(Time.get_ticks_msec() / 1000.0, 100.0)
+	push_constant.encode_float(8, time_seconds)
+	
+	print("Time being passed: ", time_seconds)
 	
 	# Create a compute pipeline (from docs)
 	# Leymans terms: RUN THE SHADER RHAHHH
@@ -187,8 +191,11 @@ func _draw() -> void:
 			var index = y * GRID_SIZE.x + x
 			var value = pressure_data[index]
 			
+			# Normalize pressure to visible range (-1 to 1 maps to 0 to 1)
+			var normalized = clamp(value * 2.0 + 0.5, 0.0, 1.0)
+			
 			# Map a value 0-1 with greyscale
-			var color = Color(value, value, value, 1.0)
+			var color = Color(normalized, normalized, normalized, 1.0)
 			
 			var rect = Rect2(x * CELL_SIZE + position_offset.x, y * CELL_SIZE + position_offset.y, CELL_SIZE - 1, CELL_SIZE - 1)
 			draw_rect(rect, color)

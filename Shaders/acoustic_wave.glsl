@@ -30,7 +30,7 @@ layout(push_constant, std430) uniform Params {
 const float MACH_1 = 343.0; // m/s of soundwaves
 const float AIR_DENSITY = 1.225; // kg/m^3
 const float DX = 1.0; // Grid spacing (normalized)
-const float DT = 0.001; // Time step
+const float DT = .001; // Time step
 const float COURANT = MACH_1 * DT / DX; // Must be < 1 for stability (CFL condition, whatever that menas)
 
 // 0 is no damping, 1 is full damping
@@ -40,7 +40,7 @@ int get_index(ivec2 pos) {
     return pos.y * params.grid_width + pos.x;
 }
 float sample_pressure(ivec2 pos) {
-    pos = pos, ivec2(0), ivec2(params.grid_width - 1, params.grid_height - 1);
+    pos = clamp(pos, ivec2(0), ivec2(params.grid_width - 1, params.grid_height - 1));
     return pressure[get_index(pos)];
 }
 float sample_vel_x(ivec2 pos) {
@@ -91,16 +91,19 @@ void main() {
     
     new_pressure *= (1.0 - DAMPING);
     
+    float test_pressure = 0.0;
+    
     // Add a oscillating source to see stuff change
     ivec2 source_pos = ivec2(params.grid_width / 2, params.grid_height / 2);
     if (pos == source_pos) {
         // Sine wave source
-        float frequency = 5.0;  // Hz (in simulation time)
-        float amplitude = 0.5;
+        float frequency = 100.;  // Hz (in simulation time)
+        float amplitude = 1;
         float source_signal = amplitude * sin(2.0 * 3.14159 * frequency * params.time);
-        pressure[index] += source_signal;
+        test_pressure = source_signal;
     }
     
     
-    pressure[index] = new_pressure;
+    pressure[index] = new_pressure + test_pressure;
+    
 }
