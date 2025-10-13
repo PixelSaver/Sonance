@@ -5,16 +5,17 @@
 // 8x8 threads so 64 threads in a workgroup
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-// Input maps
-layout(set = 0, binding = 0, std430) restrict buffer DataBuffer {
-    float pressure[];
+// Input maps, two pressures to use old and new, writes into pressure_new
+layout(set = 0, binding = 0, std430) restrict buffer PressureOld {
+    float pressure_old[];
 };
-// Input maps
-layout(set = 0, binding = 1, std430) restrict buffer VelocityXBuffer {
+layout(set = 0, binding = 1, std430) restrict buffer PressureNew {
+    float pressure_new[];
+};
+layout(set = 0, binding = 2, std430) restrict buffer VelocityXBuffer {
     float vel_x[];
 };
-// Input maps
-layout(set = 0, binding = 2, std430) restrict buffer VelocityYBuffer {
+layout(set = 0, binding = 3, std430) restrict buffer VelocityYBuffer {
     float vel_y[];
 };
 
@@ -27,11 +28,11 @@ layout(push_constant, std430) uniform Params {
     float _padding;
 } params;
 
-const float MACH_1 = 343.0; // m/s of soundwaves
+const float C = 343.0; // m/s of soundwaves
 const float AIR_DENSITY = 1.225; // kg/m^3
 const float DX = 1.0; // Grid spacing (normalized)
 const float DT = .001; // Time step
-const float COURANT = MACH_1 * DT / DX; // Must be < 1 for stability (CFL condition, whatever that menas)
+const float COURANT = C * DT / DX; // Must be < 1 for stability (CFL condition, whatever that menas)
 
 // 0 is no damping, 1 is full damping
 const float DAMPING = 0.01;
@@ -41,7 +42,7 @@ int get_index(ivec2 pos) {
 }
 float sample_pressure(ivec2 pos) {
     pos = clamp(pos, ivec2(0), ivec2(params.grid_width - 1, params.grid_height - 1));
-    return pressure[get_index(pos)];
+    return pressure_old[get_index(pos)];
 }
 float sample_vel_x(ivec2 pos) {
     pos = clamp(pos, ivec2(0), ivec2(params.grid_width - 1, params.grid_height - 1));
@@ -75,28 +76,25 @@ void main() {
     float laplacian = p_left + p_right + p_top + p_bottom - 4.0 * p_center;
     
     // Wave equation update
-    float new_pressure = p_center + MACH_1 * MACH_1 * laplacian;
+    float new_pressure = p_center + C * C * laplacian;
     
     // Apply damping
-    new_pressure *= DAMPING;
-    
-    pressure[index] = new_pressure;
-    
     new_pressure *= (1.0 - DAMPING);
     
-    float test_pressure = 0.0;
+    float test_pressure = 0.;
     
-    // Add a oscillating source to see stuff change
+    // // Add a oscillating source to see stuff change
     ivec2 source_pos = ivec2(params.grid_width / 2, params.grid_height / 2);
     if (pos == source_pos) {
         // Sine wave source
-        float frequency = 1.;  // Hz (in simulation time)
-        float amplitude = .5;
+        float frequency = .5;  // Hz (in simulation time)
+        float amplitude = 1.;
         float source_signal = amplitude * sin(2.0 * 3.14159 * frequency * params.time);
         test_pressure = source_signal;
+        // test_pressure = 2.;
     }
     
     
-    pressure[index] = new_pressure + test_pressure;
+    pressure_new[index] = new_pressure + test_pressure;
     
 }

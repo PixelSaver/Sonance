@@ -7,17 +7,21 @@ const SHADER_FILE_PATH = "res://Shaders/acoustic_wave.glsl"
 var rd: RenderingDevice
 var shader: RID
 var pipeline: RID
-var uniform_set: RID
+var uniform_set_a: RID
+var uniform_set_b: RID
 
-var pressure_data: PackedFloat32Array
+var pressure_data_a: PackedFloat32Array
+var pressure_data_b: PackedFloat32Array
 var vel_x_data: PackedFloat32Array
 var vel_y_data: PackedFloat32Array
-var buffer_p: RID
+var buffer_p_a: RID
+var buffer_p_b: RID
 var buffer_x: RID
 var buffer_y: RID
 
 # QoL stuff
 var position_offset : Vector2
+var use_a_as_input := true # Toggles for swapping set a and b for double buffering
 
 # Playback controls
 var is_playing := false
@@ -55,9 +59,12 @@ func _ready() -> void:
 
 func setup_buffers():
 	# Initialize arrays
-	pressure_data = PackedFloat32Array()
-	pressure_data.resize(GRID_SIZE.x * GRID_SIZE.y)
-	pressure_data.fill(0.0)
+	pressure_data_a = PackedFloat32Array()
+	pressure_data_a.resize(GRID_SIZE.x * GRID_SIZE.y)
+	pressure_data_a.fill(0.0)
+	pressure_data_b = PackedFloat32Array()
+	pressure_data_b.resize(GRID_SIZE.x * GRID_SIZE.y)
+	pressure_data_b.fill(0.0)
 
 	vel_x_data = PackedFloat32Array()
 	vel_x_data.resize(GRID_SIZE.x * GRID_SIZE.y)
@@ -68,8 +75,10 @@ func setup_buffers():
 	vel_y_data.fill(0.0)
 
 	# Create GPU storage buffers from the arrays (use their byte representations)
-	var bytes_p := pressure_data.to_byte_array()
-	buffer_p = rd.storage_buffer_create(bytes_p.size(), bytes_p)
+	var bytes_p_a := pressure_data_a.to_byte_array()
+	buffer_p_a = rd.storage_buffer_create(bytes_p_a.size(), bytes_p_a)
+	var bytes_p_b := pressure_data_b.to_byte_array()
+	buffer_p_b = rd.storage_buffer_create(bytes_p_b.size(), bytes_p_b)
 
 	var bytes_x := vel_x_data.to_byte_array()
 	buffer_x = rd.storage_buffer_create(bytes_x.size(), bytes_x)
@@ -81,20 +90,25 @@ func setup_buffers():
 	var uniform0 = RDUniform.new()
 	uniform0.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	uniform0.binding = 0
-	uniform0.add_id(buffer_p)
-
+	uniform0.add_id(buffer_p_a)
 	var uniform1 = RDUniform.new()
 	uniform1.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	uniform1.binding = 1
-	uniform1.add_id(buffer_x)
+	uniform1.add_id(buffer_p_b)
 
 	var uniform2 = RDUniform.new()
 	uniform2.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	uniform2.binding = 2
-	uniform2.add_id(buffer_y)
+	uniform2.add_id(buffer_x)
 
-	# Create a single uniform set that contains all three uniforms.
-	uniform_set = rd.uniform_set_create([uniform0, uniform1, uniform2], shader, 0)
+	var uniform3 = RDUniform.new()
+	uniform3.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform3.binding = 3
+	uniform3.add_id(buffer_y)
+
+	# Two unifroms to double buffer, swap a and b for shader to write to
+	uniform_set_a = rd.uniform_set_create([uniform0, uniform1, uniform2, uniform3], shader, 0)
+	uniform_set_b = rd.uniform_set_create([uniform1, uniform0, uniform2, uniform3], shader, 0)
 
 # The plan 
 func _process(delta: float) -> void:
@@ -156,7 +170,7 @@ func run_compute_shader():
 	push_constant.resize(16)
 	push_constant.encode_s32(0, GRID_SIZE.x)
 	push_constant.encode_s32(4, GRID_SIZE.y)
-	var time_seconds = fmod(Time.get_ticks_msec() / 1000.0, 100.0)
+	var time_seconds = fmod(Time.get_ticks_usec() / 1000000.0, 100.0)
 	push_constant.encode_float(8, time_seconds)
 	
 	print("Time being passed: ", time_seconds)
@@ -165,7 +179,9 @@ func run_compute_shader():
 	# Leymans terms: RUN THE SHADER RHAHHH
 	var compute_list : int = rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
-	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+	
+	var active_uniform_set = uniform_set_a if use_a_as_input else uniform_set_b
+	rd.compute_list_bind_uniform_set(compute_list, active_uniform_set, 0)
 	rd.compute_list_set_push_constant(compute_list, push_constant, push_constant.size())
 	
 	# Dispatch AKA GOOOOOOOO but 8x8 threads for now
@@ -179,17 +195,17 @@ func run_compute_shader():
 	rd.sync()
 
 func read_data_from_gpu():
-	# From the docs, read output
-	var output_bytes := rd.buffer_get_data(buffer_p)
-	# Place data into grid, for next simulation run
-	pressure_data = output_bytes.to_float32_array()
+	var buffer_to_read = buffer_p_a if use_a_as_input else buffer_p_b
+	var output_bytes = rd.buffer_get_data(buffer_to_read)
+	pressure_data_a = output_bytes.to_float32_array()
+	use_a_as_input = !use_a_as_input
 
 # Visualize the grid
 func _draw() -> void:
 	for y in GRID_SIZE.y:
 		for x in GRID_SIZE.x:
 			var index = y * GRID_SIZE.x + x
-			var value = pressure_data[index]
+			var value = pressure_data_a[index]
 			
 			# Normalize pressure to visible range (-1 to 1 maps to 0 to 1)
 			var normalized = clamp(value * 2.0 + 0.5, 0.0, 1.0)
@@ -203,10 +219,12 @@ func _draw() -> void:
 # Cleanup just in case
 func _exit_tree():
 	if rd:
-		rd.free_rid(buffer_p)
+		rd.free_rid(buffer_p_a)
+		rd.free_rid(buffer_p_b)
 		rd.free_rid(buffer_x)
 		rd.free_rid(buffer_y)
-		rd.free_rid(uniform_set)
+		rd.free_rid(uniform_set_a)
+		rd.free_rid(uniform_set_b)
 		rd.free_rid(pipeline)
 		rd.free_rid(shader)
 		rd.free()
