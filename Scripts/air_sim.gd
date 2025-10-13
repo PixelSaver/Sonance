@@ -54,14 +54,22 @@ func run_compute_shader():
 	var push_constant = PackedByteArray()
 	push_constant.resize(8)
 	push_constant.encode_s32(0, GRID_SIZE.x)
-	push_constant.encode_s32(0, GRID_SIZE.y)
+	push_constant.encode_s32(4, GRID_SIZE.y)
+	push_constant.encode_float(8, Time.get_ticks_msec())
+	
 	# Create a compute pipeline (from docs)
-	var compute_list := rd.compute_list_begin()
+	# Leymans terms: RUN THE SHADER RHAHHH
+	var compute_list : int = rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 5, 1, 1)
-	rd.compute_list_end()
+	rd.compute_list_set_push_constant(compute_list, push_constant, push_constant.size())
+	
+	# Dispatch AKA GOOOOOOOO but 8x8 threads for now
+	var groups_x := ceili(float(GRID_SIZE.x) / 8.0)
+	var groups_y := ceili(float(GRID_SIZE.y) / 8.0)
+	rd.compute_list_dispatch(compute_list, groups_x, groups_y, 1)
 	
 	# Submit to GPU and wait for sync
+	rd.compute_list_end()
 	rd.submit()
 	rd.sync()
