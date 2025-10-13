@@ -1,7 +1,7 @@
 extends Node2D
 
 const GRID_SIZE := Vector2i(32, 16)  # Small grid to start
-const CELL_SIZE = 16  # Pixels per cell (for drawing)
+const CELL_SIZE = 32  # Pixels per cell (for drawing)
 const SHADER_FILE_PATH = "res://Shaders/acoustic_wave.glsl"
 
 var rd: RenderingDevice

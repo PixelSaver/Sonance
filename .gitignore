@@ -2,3 +2,5 @@
 .godot/
 /android/
 ignore/
+addons/images
+addons/godot_super-wakatime

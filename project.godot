@@ -14,3 +14,7 @@ config/name="Sonance"
 run/main_scene="uid://wnbe8obgwtoh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
