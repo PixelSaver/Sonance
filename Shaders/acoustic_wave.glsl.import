@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bomvtohrgqm88"
+path="res://.godot/imported/acoustic_wave.glsl-f7af806f15b10de591093d75de8cb63a.res"
+
+[deps]
+
+source_file="res://Shaders/acoustic_wave.glsl"
+dest_files=["res://.godot/imported/acoustic_wave.glsl-f7af806f15b10de591093d75de8cb63a.res"]
+
+[params]
+
