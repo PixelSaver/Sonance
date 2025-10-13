@@ -11,7 +11,7 @@ layout(set = 0, binding = 0, std430) restrict buffer DataBuffer {
 };
 
 // Parameters passed each frame
-layout(push_constant, std431) uniform Params {
+layout(push_constant, std430) uniform Params {
     int grid_width;
     int grid_height;
     float time;

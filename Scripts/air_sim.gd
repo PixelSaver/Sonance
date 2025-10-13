@@ -2,7 +2,7 @@ extends Node2D
 
 const GRID_SIZE := Vector2i(32, 16)  # Small grid to start
 const CELL_SIZE = 16  # Pixels per cell (for drawing)
-const SHADER_FILE_PATH = "res://ignore/acoustic_wave.glsl"
+const SHADER_FILE_PATH = "res://Shaders/acoustic_wave.glsl"
 
 var rd: RenderingDevice
 var shader: RID
@@ -56,8 +56,8 @@ func _process(_delta: float) -> void:
 func run_compute_shader():
 	# Push constants AKA params AKA uniforms WHY SO MANY NAMES
 	var push_constant = PackedByteArray()
-	# Apparently theres rules, you have to do this in 32...
-	push_constant.resize(32)
+	# Apparently theres rules, you have to do this in 16...
+	push_constant.resize(16)
 	push_constant.encode_s32(0, GRID_SIZE.x)
 	push_constant.encode_s32(4, GRID_SIZE.y)
 	push_constant.encode_float(8, Time.get_ticks_msec())
