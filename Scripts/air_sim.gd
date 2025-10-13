@@ -43,9 +43,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if not rd: return
 	
-	#run_compute_shader()
+	run_compute_shader()
 	
-	#read_data_from_gpu()
+	read_data_from_gpu()
 	
 	#queue_redraw()
 
@@ -73,3 +73,9 @@ func run_compute_shader():
 	rd.compute_list_end()
 	rd.submit()
 	rd.sync()
+
+func read_data_from_gpu():
+	# From the docs, read output
+	var output_bytes := rd.buffer_get_data(buffer)
+	# Place data into grid, for next simulation run
+	grid_data = output_bytes.to_float32_array()
