@@ -37,17 +37,7 @@ func _ready() -> void:
 	uniform.add_id(buffer)
 	uniform_set = rd.uniform_set_create([uniform], shader, 0)
 	
-	## Create a compute pipeline (from docs)
-	#pipeline = rd.compute_pipeline_create(shader)
-	#var compute_list := rd.compute_list_begin()
-	#rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
-	#rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	#rd.compute_list_dispatch(compute_list, 5, 1, 1)
-	#rd.compute_list_end()
-	#
-	## Submit to GPU and wait for sync
-	#rd.submit()
-	#rd.sync()
+	
 
 # The plan 
 func _process(_delta: float) -> void:
@@ -58,3 +48,20 @@ func _process(_delta: float) -> void:
 	#read_data_from_gpu()
 	
 	#queue_redraw()
+
+func run_compute_shader():
+	# Push constants AKA params AKA uniforms WHY SO MANY NAMES
+	var push_constant = PackedByteArray()
+	push_constant.resize(8)
+	push_constant.encode_s32(0, GRID_SIZE.x)
+	push_constant.encode_s32(0, GRID_SIZE.y)
+	# Create a compute pipeline (from docs)
+	var compute_list := rd.compute_list_begin()
+	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
+	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+	rd.compute_list_dispatch(compute_list, 5, 1, 1)
+	rd.compute_list_end()
+	
+	# Submit to GPU and wait for sync
+	rd.submit()
+	rd.sync()

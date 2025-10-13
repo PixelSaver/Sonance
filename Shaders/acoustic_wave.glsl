@@ -1,4 +1,4 @@
-@[compute]
+#[compute]
 #version 450
 
 // Parallel stuff running on the GPU
@@ -11,11 +11,11 @@ layout(set = 0, binding = 0, std430) restrict buffer DataBuffer {
 }
 
 // Parameters passed each frame
-// layout(push_constant, std430) uniform Params {
-//     int grid_width;
-//     int grid_height;
-//     float time;
-// } params;
+layout(push_constant, std430) uniform Params {
+    int grid_width;
+    int grid_height;
+    float time;
+} params;
 
 void main() {
     // Which cell in the grid are we working on?
