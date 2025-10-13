@@ -19,6 +19,13 @@ var buffer_y: RID
 # QoL stuff
 var position_offset : Vector2
 
+# Playback controls
+var is_playing := false
+var max_fps := 60
+var frame_counter := 0
+var fps_display := 0
+var time_accumulator := 0.0
+
 func _ready() -> void:
 	rd = RenderingServer.create_local_rendering_device()
 	if not rd:
@@ -42,6 +49,8 @@ func _ready() -> void:
 	
 	read_data_from_gpu()
 	
+	# Start in paused state
+	is_playing = false
 	queue_redraw()
 
 func setup_buffers():
@@ -88,14 +97,56 @@ func setup_buffers():
 	uniform_set = rd.uniform_set_create([uniform0, uniform1, uniform2], shader, 0)
 
 # The plan 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not rd: return
 	
-	#run_compute_shader()
-	#
-	#read_data_from_gpu()
-	#
-	#queue_redraw()
+	handle_input()
+	update_fps_counter(delta)
+	
+	# Only run simulation if playing and we have time
+	if is_playing:
+		var frame_time = 1.0 / max_fps
+		time_accumulator += delta
+		
+		while time_accumulator >= frame_time:
+			run_compute_shader()
+			read_data_from_gpu()
+			time_accumulator -= frame_time
+			frame_counter += 1
+			queue_redraw()
+			print("ran %s" % Time.get_unix_time_from_system())
+
+func handle_input() -> void:
+	# Playing and pausing
+	if Input.is_action_just_pressed("ui_select"):
+		is_playing = !is_playing
+	
+	# Right arrow to frame forward
+	if Input.is_action_just_pressed("ui_right"):
+		run_compute_shader()
+		read_data_from_gpu()
+		frame_counter += 1
+		queue_redraw()
+	
+	# Left arrow to frame backward but cant rn so placeholder
+	if Input.is_action_just_pressed("ui_left"):
+		#TODO Implement frame history for a few frames
+		is_playing = false
+		push_error("Frame back not yet implemented - would need frame history")
+	
+	# Change max FPS with up/down arrows
+	if Input.is_action_just_pressed("ui_up"):
+		max_fps = min(max_fps + 10, 240)
+	
+	if Input.is_action_just_pressed("ui_down"):
+		max_fps = max(max_fps - 10, 10)
+
+## FPS Counter 
+func update_fps_counter(delta: float) -> void:
+	time_accumulator += delta
+	if time_accumulator >= 0.5:
+		fps_display = roundi(1.0 / delta)
+		time_accumulator -= 0.5
 
 func run_compute_shader():
 	# Push constants AKA params AKA uniforms WHY SO MANY NAMES
