@@ -56,7 +56,8 @@ func _process(_delta: float) -> void:
 func run_compute_shader():
 	# Push constants AKA params AKA uniforms WHY SO MANY NAMES
 	var push_constant = PackedByteArray()
-	push_constant.resize(8)
+	# Apparently theres rules, you have to do this in 32...
+	push_constant.resize(32)
 	push_constant.encode_s32(0, GRID_SIZE.x)
 	push_constant.encode_s32(4, GRID_SIZE.y)
 	push_constant.encode_float(8, Time.get_ticks_msec())

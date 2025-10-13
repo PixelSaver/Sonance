@@ -11,10 +11,12 @@ layout(set = 0, binding = 0, std430) restrict buffer DataBuffer {
 };
 
 // Parameters passed each frame
-layout(push_constant, std430) uniform Params {
+layout(push_constant, std431) uniform Params {
     int grid_width;
     int grid_height;
     float time;
+    // Apparently theres dumb rule that it has to be 32??? idk we'll see
+    float _padding;
 } params;
 
 void main() {
@@ -22,7 +24,7 @@ void main() {
     ivec2 pos = ivec2(gl_GlobalInvocationID.xy);
     
     // Check out of bounds and stuff
-    if pos.x >= params.grid_width || pos.y >= params.grid_height) {
+    if (pos.x >= params.grid_width || pos.y >= params.grid_height) {
         return;
     }
     
