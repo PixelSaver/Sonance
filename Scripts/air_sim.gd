@@ -41,16 +41,20 @@ func _ready() -> void:
 	uniform.add_id(buffer)
 	uniform_set = rd.uniform_set_create([uniform], shader, 0)
 	
+	run_compute_shader()
 	
+	read_data_from_gpu()
+	
+	queue_redraw()
 
 # The plan 
 func _process(_delta: float) -> void:
 	if not rd: return
 	
-	run_compute_shader()
-	
-	read_data_from_gpu()
-	
+	#run_compute_shader()
+	#
+	#read_data_from_gpu()
+	#
 	#queue_redraw()
 
 func run_compute_shader():
@@ -84,3 +88,16 @@ func read_data_from_gpu():
 	var output_bytes := rd.buffer_get_data(buffer)
 	# Place data into grid, for next simulation run
 	grid_data = output_bytes.to_float32_array()
+
+# Visualize the grid
+func _draw() -> void:
+	for y in GRID_SIZE.y:
+		for x in GRID_SIZE.x:
+			var index = y * GRID_SIZE.x + x
+			var value = grid_data[index]
+			
+			# Map a value 0-1 with greyscale
+			var color = Color(value, value, value, 1.0)
+			
+			var rect = Rect2(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1)
+			draw_rect(rect, color)
