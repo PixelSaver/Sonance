@@ -22,6 +22,7 @@ func _ready() -> void:
 	var shader_file := load(SHADER_FILE_PATH)
 	var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
 	shader = rd.shader_create_from_spirv(shader_spirv)
+	pipeline = rd.compute_pipeline_create(shader)
 	
 	# Actually make input buffer and stuff
 	grid_data = PackedFloat32Array()
@@ -36,11 +37,24 @@ func _ready() -> void:
 	uniform.add_id(buffer)
 	uniform_set = rd.uniform_set_create([uniform], shader, 0)
 	
-	# Create a compute pipeline (from docs)
-	pipeline = rd.compute_pipeline_create(shader)
-	var compute_list := rd.compute_list_begin()
-	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
-	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, 5, 1, 1)
-	rd.compute_list_end()
+	## Create a compute pipeline (from docs)
+	#pipeline = rd.compute_pipeline_create(shader)
+	#var compute_list := rd.compute_list_begin()
+	#rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
+	#rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+	#rd.compute_list_dispatch(compute_list, 5, 1, 1)
+	#rd.compute_list_end()
+	#
+	## Submit to GPU and wait for sync
+	#rd.submit()
+	#rd.sync()
+
+# The plan 
+func _process(_delta: float) -> void:
+	if not rd: return
 	
+	#run_compute_shader()
+	
+	#read_data_from_gpu()
+	
+	#queue_redraw()
