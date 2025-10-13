@@ -12,6 +12,9 @@ var uniform_set: RID
 
 var grid_data: PackedFloat32Array
 
+# QoL stuff
+var position_offset : Vector2
+
 func _ready() -> void:
 	rd = RenderingServer.create_local_rendering_device()
 	if not rd:
@@ -41,11 +44,16 @@ func _ready() -> void:
 	uniform.add_id(buffer)
 	uniform_set = rd.uniform_set_create([uniform], shader, 0)
 	
+	# QoL stuff
+	position_offset = get_viewport_rect().size / 2
+	position_offset -= Vector2(GRID_SIZE.x * CELL_SIZE, GRID_SIZE.y * CELL_SIZE) / 2.
+	
 	run_compute_shader()
 	
 	read_data_from_gpu()
 	
 	queue_redraw()
+	
 
 # The plan 
 func _process(_delta: float) -> void:
@@ -99,5 +107,5 @@ func _draw() -> void:
 			# Map a value 0-1 with greyscale
 			var color = Color(value, value, value, 1.0)
 			
-			var rect = Rect2(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1)
+			var rect = Rect2(x * CELL_SIZE + position_offset.x, y * CELL_SIZE + position_offset.y, CELL_SIZE - 1, CELL_SIZE - 1)
 			draw_rect(rect, color)
