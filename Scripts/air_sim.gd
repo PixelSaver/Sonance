@@ -9,7 +9,6 @@ var shader: RID
 var pipeline: RID
 var uniform_set: RID
 
-var grid_data: PackedFloat32Array
 var pressure_data: PackedFloat32Array
 var vel_x_data: PackedFloat32Array
 var vel_y_data: PackedFloat32Array
@@ -128,7 +127,7 @@ func read_data_from_gpu():
 	# From the docs, read output
 	var output_bytes := rd.buffer_get_data(buffer_p)
 	# Place data into grid, for next simulation run
-	grid_data = output_bytes.to_float32_array()
+	pressure_data = output_bytes.to_float32_array()
 
 # Visualize the grid
 func _draw() -> void:
