@@ -22,7 +22,7 @@ void main() {
     ivec2 pos = ivec2(gl_GlobalInvocationID.xy);
     
     // Check out of bounds and stuff
-    if pos.x >= parans.grid_width || pos.y >= parans.grid_height) {
+    if pos.x >= params.grid_width || pos.y >= params.grid_height) {
         return;
     }
     

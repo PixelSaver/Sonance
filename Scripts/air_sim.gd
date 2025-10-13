@@ -29,6 +29,10 @@ func _ready() -> void:
 	grid_data.resize(GRID_SIZE.x * GRID_SIZE.y)
 	grid_data.fill(0.0)
 	
+	# Forgot to make the actual buffer...
+	var bytes = grid_data.to_byte_array()
+	buffer = rd.storage_buffer_create(bytes.size(), bytes)
+	
 	# Passing in information to the shader
 	# Called uniforms in glsl i think
 	var uniform = RDUniform.new()
