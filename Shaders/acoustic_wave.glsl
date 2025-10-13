@@ -63,31 +63,24 @@ void main() {
     
     int index = get_index(pos);
     
-    // v = v + (dt / (rho * dx)) * grad(p)
+    // Simple wave equation: p_new = 2*p - p_old + c^2 * laplacian(p)
+    // We'll use the current pressure as both p and p_old for simplicity
     float p_center = sample_pressure(pos);
     float p_left = sample_pressure(pos + ivec2(-1, 0));
     float p_right = sample_pressure(pos + ivec2(1, 0));
     float p_top = sample_pressure(pos + ivec2(0, -1));
     float p_bottom = sample_pressure(pos + ivec2(0, 1));
     
-    // Pressure gradients
-    float dp_dx = (p_right - p_left) / (2.0 * DX);
-    float dp_dy = (p_bottom - p_top) / (2.0 * DX);
+    // Laplacian (second derivative)
+    float laplacian = p_left + p_right + p_top + p_bottom - 4.0 * p_center;
     
-    // Updating vel
-    float new_vel_x = vel_x[index] - (DT / (AIR_DENSITY * DX)) * dp_dx;
-    float new_vel_y = vel_y[index] - (DT / (AIR_DENSITY * DX)) * dp_dy;
+    // Wave equation update
+    float new_pressure = p_center + MACH_1 * MACH_1 * laplacian;
     
-    // p = p - (rho * c^2 * dt / dx) * div(v)
-    float vel_x_left = sample_vel_x(pos + ivec2(-1, 0));
-    float vel_x_right = sample_vel_x(pos + ivec2(1, 0));
-    float vel_y_top = sample_vel_y(pos + ivec2(0, -1));
-    float vel_y_bottom = sample_vel_y(pos + ivec2(0, 1));
+    // Apply damping
+    new_pressure *= DAMPING;
     
-    float div_v = ((vel_x_right - vel_x_left) + (vel_y_bottom - vel_y_top)) / (2.0 * DX);
-        
-    // Update pressure
-    float new_pressure = pressure[index] - (AIR_DENSITY * MACH_1 * MACH_1 * DT / DX) * div_v;
+    pressure[index] = new_pressure;
     
     new_pressure *= (1.0 - DAMPING);
     
@@ -97,8 +90,8 @@ void main() {
     ivec2 source_pos = ivec2(params.grid_width / 2, params.grid_height / 2);
     if (pos == source_pos) {
         // Sine wave source
-        float frequency = 100.;  // Hz (in simulation time)
-        float amplitude = 1;
+        float frequency = 1.;  // Hz (in simulation time)
+        float amplitude = .5;
         float source_signal = amplitude * sin(2.0 * 3.14159 * frequency * params.time);
         test_pressure = source_signal;
     }
