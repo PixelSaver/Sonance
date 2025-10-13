@@ -7,13 +7,15 @@ const SHADER_FILE_PATH = "res://Shaders/acoustic_wave.glsl"
 var rd: RenderingDevice
 var shader: RID
 var pipeline: RID
-var buffer: RID
 var uniform_set: RID
 
 var grid_data: PackedFloat32Array
 var pressure_data: PackedFloat32Array
 var vel_x_data: PackedFloat32Array
 var vel_y_data: PackedFloat32Array
+var buffer_p: RID
+var buffer_x: RID
+var buffer_y: RID
 
 # QoL stuff
 var position_offset : Vector2
@@ -24,49 +26,67 @@ func _ready() -> void:
 		push_error("GPU compute and rendering server not supported")
 		return
 	
+	# QoL stuff
+	position_offset = get_viewport_rect().size / 2
+	position_offset -= Vector2(GRID_SIZE.x * CELL_SIZE, GRID_SIZE.y * CELL_SIZE) / 2.
+	
 	# THIS IS WAHT THE DOCS SAID HELP https://docs.godotengine.org/en/latest/tutorials/shaders/compute_shaders.html
 	var shader_file := load(SHADER_FILE_PATH)
 	var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
 	shader = rd.shader_create_from_spirv(shader_spirv)
 	pipeline = rd.compute_pipeline_create(shader)
 	
-	# Actually make input buffer and stuff
-	grid_data = PackedFloat32Array()
-	grid_data.resize(GRID_SIZE.x * GRID_SIZE.y)
-	grid_data.fill(0.0)
+	setup_buffers()
 	
-	# Forgot to make the actual buffer...
-	var bytes = grid_data.to_byte_array()
-	buffer = rd.storage_buffer_create(bytes.size(), bytes)
-	
-	# Passing in information to the shader
-	# Called uniforms in glsl i think
-	var uniform0 = RDUniform.new()
-	uniform0.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform0.binding = 0 # needs to match the "binding" in shader file (from docs)
-	uniform0.add_id(buffer)
-	uniform_set = rd.uniform_set_create([uniform0], shader, 0)
-	var uniform1 = RDUniform.new()
-	uniform1.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform1.binding = 1
-	uniform1.add_id(buffer)
-	uniform_set = rd.uniform_set_create([uniform1], shader, 1)
-	var uniform2 = RDUniform.new()
-	uniform2.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform2.binding = 2
-	uniform2.add_id(buffer)
-	uniform_set = rd.uniform_set_create([uniform2], shader, 2)
-	
-	# QoL stuff
-	position_offset = get_viewport_rect().size / 2
-	position_offset -= Vector2(GRID_SIZE.x * CELL_SIZE, GRID_SIZE.y * CELL_SIZE) / 2.
-	
+	# Cycle
 	run_compute_shader()
 	
 	read_data_from_gpu()
 	
 	queue_redraw()
-	
+
+func setup_buffers():
+	# Initialize arrays
+	pressure_data = PackedFloat32Array()
+	pressure_data.resize(GRID_SIZE.x * GRID_SIZE.y)
+	pressure_data.fill(0.0)
+
+	vel_x_data = PackedFloat32Array()
+	vel_x_data.resize(GRID_SIZE.x * GRID_SIZE.y)
+	vel_x_data.fill(0.0)
+
+	vel_y_data = PackedFloat32Array()
+	vel_y_data.resize(GRID_SIZE.x * GRID_SIZE.y)
+	vel_y_data.fill(0.0)
+
+	# Create GPU storage buffers from the arrays (use their byte representations)
+	var bytes_p := pressure_data.to_byte_array()
+	buffer_p = rd.storage_buffer_create(bytes_p.size(), bytes_p)
+
+	var bytes_x := vel_x_data.to_byte_array()
+	buffer_x = rd.storage_buffer_create(bytes_x.size(), bytes_x)
+
+	var bytes_y := vel_y_data.to_byte_array()
+	buffer_y = rd.storage_buffer_create(bytes_y.size(), bytes_y)
+
+	# Create RDUniform entries for each storage buffer (bindings must match shader)
+	var uniform0 = RDUniform.new()
+	uniform0.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform0.binding = 0
+	uniform0.add_id(buffer_p)
+
+	var uniform1 = RDUniform.new()
+	uniform1.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform1.binding = 1
+	uniform1.add_id(buffer_x)
+
+	var uniform2 = RDUniform.new()
+	uniform2.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	uniform2.binding = 2
+	uniform2.add_id(buffer_y)
+
+	# Create a single uniform set that contains all three uniforms.
+	uniform_set = rd.uniform_set_create([uniform0, uniform1, uniform2], shader, 0)
 
 # The plan 
 func _process(_delta: float) -> void:
@@ -106,7 +126,7 @@ func run_compute_shader():
 
 func read_data_from_gpu():
 	# From the docs, read output
-	var output_bytes := rd.buffer_get_data(buffer)
+	var output_bytes := rd.buffer_get_data(buffer_p)
 	# Place data into grid, for next simulation run
 	grid_data = output_bytes.to_float32_array()
 
@@ -115,7 +135,7 @@ func _draw() -> void:
 	for y in GRID_SIZE.y:
 		for x in GRID_SIZE.x:
 			var index = y * GRID_SIZE.x + x
-			var value = grid_data[index]
+			var value = pressure_data[index]
 			
 			# Map a value 0-1 with greyscale
 			var color = Color(value, value, value, 1.0)
@@ -126,7 +146,9 @@ func _draw() -> void:
 # Cleanup just in case
 func _exit_tree():
 	if rd:
-		rd.free_rid(buffer)
+		rd.free_rid(buffer_p)
+		rd.free_rid(buffer_x)
+		rd.free_rid(buffer_y)
 		rd.free_rid(uniform_set)
 		rd.free_rid(pipeline)
 		rd.free_rid(shader)
