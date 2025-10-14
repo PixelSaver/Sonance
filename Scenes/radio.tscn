@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d17hg6ip2814h"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6jxtu"]
+size = Vector3(1, 0.583, 0.458)
+
+[node name="Radio" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_6jxtu")
