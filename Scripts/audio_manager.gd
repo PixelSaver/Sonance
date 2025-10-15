@@ -10,6 +10,13 @@ var t : Tween
 
 func _ready():
 	print(stations_list)
+	for i in range(stations_list.size()):
+		var inst = Station.new()
+		add_child(inst)
+		inst.station_name = stations_list[i].station_name
+		inst.frequency = stations_list[i].frequency
+		inst.range = stations_list[i].range
+		inst.stream = load(stations_list[i].stream)
 	num_stations = stations.size()
 
 ## Change the 'frequency' of the radio 
