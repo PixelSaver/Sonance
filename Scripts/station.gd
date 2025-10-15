@@ -1,0 +1,10 @@
+extends AudioStreamPlayer3D
+class_name Station
+
+@export var frequency: float
+@export var range: float
+
+func _ready():
+	volume_db = -80
+	stream.loop_mode = AudioStreamWAV.LoopMode.LOOP_FORWARD
+	play()

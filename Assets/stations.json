@@ -1,0 +1,20 @@
+[
+  {
+	"name": "Jazz FM",
+	"frequency": 20.0,
+	"range": 5.0,
+	"stream": "res://audio/jazz.ogg"
+  },
+  {
+	"name": "Rock Radio",
+	"frequency": 50.0,
+	"range": 4.0,
+	"stream": "res://audio/rock.ogg"
+  },
+  {
+	"name": "Talk Station",
+	"frequency": 80.0,
+	"range": 6.0,
+	"stream": "res://audio/talk.ogg"
+  }
+]
