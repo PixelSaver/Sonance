@@ -4,6 +4,7 @@ class_name Radio
 @export var knob1 : RigidBody3D
 @export var knob2 : RigidBody3D
 @export var sensitivity : float = 0.1
+@export var tuning_fork : RigidBody3D
 var tuning : float = 0.
 var volume : float = 1.
 var knob_hovered : RigidBody3D
@@ -52,6 +53,7 @@ func update_knob_turn(event:InputEventMouseMotion):
 			tuning += (-event.relative.y + event.relative.x) * sensitivity
 			print("Knob value:", tuning)
 			knob1.rotation.z = tuning
+			tuning_fork.position.x = tuning * 0.01
 		knob2:
 			volume += (-event.relative.y + event.relative.x) * sensitivity
 			print("Knob value:", volume)
