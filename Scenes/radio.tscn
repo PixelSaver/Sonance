@@ -1,24 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://d17hg6ip2814h"]
 
+[ext_resource type="Script" uid="uid://m8rwy7m71x24" path="res://Scripts/radio.gd" id="1_bdbpc"]
+[ext_resource type="PackedScene" uid="uid://d2u5jui2amqna" path="res://Scenes/knob.tscn" id="2_ibud7"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_6jxtu"]
 size = Vector3(1, 0.6, 0.5)
 
-[sub_resource type="Curve" id="Curve_6jxtu"]
-_data = [Vector2(0, 0.5196096), 0.0, 0.48039043, 0, 1, Vector2(1, 1), 0.48039043, 0.0, 1, 0]
-point_count = 2
-
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_8y21s"]
-radius = 0.05
-section_length = 0.015
-curve = SubResource("Curve_6jxtu")
-
-[node name="Radio" type="MeshInstance3D"]
+[node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2")]
 mesh = SubResource("BoxMesh_6jxtu")
+script = ExtResource("1_bdbpc")
+knob1 = NodePath("Knob")
+knob2 = NodePath("Knob2")
 
-[node name="Knob" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.3, -0.1, 0.25)
-mesh = SubResource("TubeTrailMesh_8y21s")
+[node name="Knob" parent="." instance=ExtResource("2_ibud7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.1, 0.25)
+gravity_scale = 0.0
 
-[node name="Knob2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.3, -0.1, 0.25)
-mesh = SubResource("TubeTrailMesh_8y21s")
+[node name="Knob2" parent="." instance=ExtResource("2_ibud7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.1, 0.25)

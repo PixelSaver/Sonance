@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bd6kgf6otx6mq"]
+[gd_scene load_steps=6 format=3 uid="uid://bd6kgf6otx6mq"]
 
 [ext_resource type="PackedScene" uid="uid://d17hg6ip2814h" path="res://Scenes/radio.tscn" id="1_a02cp"]
+[ext_resource type="Script" uid="uid://c1ccligum3tv6" path="res://Scripts/camera_3d.gd" id="2_go701"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_go701"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -26,8 +27,12 @@ shadow_enabled = true
 
 [node name="Radio" parent="." instance=ExtResource("1_a02cp")]
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("ray")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0666083)
+script = ExtResource("2_go701")
+ray = NodePath("Mouse")
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
+[node name="Mouse" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18170202)
+target_position = Vector3(0, 0, -1)
 collision_mask = 4

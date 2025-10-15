@@ -14,6 +14,7 @@ points = PackedVector3Array(0, -0.037499998, -0.05, -0.035356306, -0.037499998, 
 
 [node name="Knob" type="RigidBody3D"]
 collision_layer = 5
+gravity_scale = 0.0
 
 [node name="Knob" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
