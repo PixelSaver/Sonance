@@ -22,3 +22,8 @@ func _ready():
 ## Change the 'frequency' of the radio 
 func set_frequency(freq:float):
 	var index = int(freq)
+	for s in stations:
+		var dist = abs(freq - s.frequency)
+		var strength : float = clamp(1. - (dist / s.range), 0., 1.)
+		s.volume_db = lerpf(-80, 0., strength)
+		
