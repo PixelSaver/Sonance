@@ -15,15 +15,14 @@ func _ready():
 		add_child(inst)
 		inst.station_name = stations_list[i].station_name
 		inst.frequency = stations_list[i].frequency
-		inst.range = stations_list[i].range
+		inst.freq_range = stations_list[i].range
 		inst.stream = load(stations_list[i].stream)
 	num_stations = stations.size()
 
 ## Change the 'frequency' of the radio 
 func set_frequency(freq:float):
-	var index = int(freq)
 	for s in stations:
 		var dist = abs(freq - s.frequency)
-		var strength : float = clamp(1. - (dist / s.range), 0., 1.)
+		var strength : float = clamp(1. - (dist / s.freq_range), 0., 1.)
 		s.volume_db = lerpf(-80, 0., strength)
 		
