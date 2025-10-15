@@ -3,6 +3,9 @@ class_name Radio
 
 @export var knob1 : RigidBody3D
 @export var knob2 : RigidBody3D
+@export var sensitivity : float = 1.
+var tuning : float = 0.
+var volume : float = 1.
 var knob_hovered : RigidBody3D
 var clicked = false
 
@@ -19,11 +22,31 @@ func _on_knob_2():
 func _on_knob_exit():
 	knob_hovered = null
 	
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_pressed("left_click"):
-		clicked = true
-		print_debug(clicked)
-	else: 
-		clicked = false
-		print_debug(clicked)
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_action("left_click"):
+			clicked = event.pressed
+			if clicked:
+				print("Mouse down")
+			else:
+				print("Mouse up")
+
+	elif event is InputEventMouseMotion:
+		if clicked and knob_hovered:
+			tuning += -event.relative.y * sensitivity
+			tuning = clamp(tuning, 0.0, 100.0) 
+			update_knob_turn()
+	
+
+
+func update_knob_turn():
+	match knob_hovered:
+		null:
+			return
+		knob1:
+			print("Knob value:", tuning)
+			knob1.rotation.z = tuning
+		knob2:
+			pass
+	
 	
