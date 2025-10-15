@@ -11,10 +11,14 @@ config_version=5
 [application]
 
 config/name="Sonance"
-run/main_scene="uid://wnbe8obgwtoh"
+run/main_scene="uid://bd6kgf6otx6mq"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
+[layer_names]
+
+3d_physics/layer_3="Knobs"
