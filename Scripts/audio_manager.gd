@@ -1,5 +1,6 @@
 extends Node3D
 
+@export var static_stream : AudioStreamPlayer3D
 @export var stations_list_json : JSON
 @onready var stations_list : Array= stations_list_json.data
 
@@ -25,4 +26,5 @@ func set_frequency(freq:float):
 		var dist = abs(freq - s.frequency)
 		var strength : float = clamp(1. - (dist / s.freq_range), 0., 1.)
 		s.volume_db = lerpf(-80, 0., strength)
+		static_stream.volume_db = lerpf(0., -80., strength)
 		
