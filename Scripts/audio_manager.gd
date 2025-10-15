@@ -3,6 +3,7 @@ extends Node3D
 @export var static_stream : AudioStreamPlayer3D
 @export var stations_list_json : JSON
 @onready var stations_list : Array= stations_list_json.data
+const STATION_SCENE = preload("res://Scenes/station.tscn")
 
 var stations : Array[Station]
 var num_stations : int = 0
@@ -12,7 +13,7 @@ var t : Tween
 func _ready():
 	print(stations_list)
 	for i in range(stations_list.size()):
-		var inst = Station.new()
+		var inst = STATION_SCENE.instantiate()
 		add_child(inst)
 		inst.station_name = stations_list[i].station_name
 		inst.frequency = stations_list[i].frequency

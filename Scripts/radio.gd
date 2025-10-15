@@ -56,6 +56,6 @@ func update_knob_turn(event:InputEventMouseMotion):
 			tuning_fork.position.x = clamp(tuning * 0.01, -.25, .25)
 		knob2:
 			volume += (-event.relative.y + event.relative.x) * sensitivity
-			knob1.rotation.z = volume * -0.05
+			knob2.rotation.z = volume * -0.05
 	
 	

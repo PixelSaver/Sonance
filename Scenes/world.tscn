@@ -17,23 +17,6 @@ sky = SubResource("Sky_5a7ea")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="Animation" id="Animation_8j60k"]
-resource_name = "camera_start"
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 1, 1, 0, 0, 1)
-tracks/1/type = "rotation_3d"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, -0.70710677, 0, 0, 0.70710677, 1, 1, 0, 0, 0, 1)
-
 [sub_resource type="Animation" id="Animation_fo5ed"]
 length = 0.001
 tracks/0/type = "position_3d"
@@ -44,14 +27,32 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.6, 0.6)
 
+[sub_resource type="Animation" id="Animation_8j60k"]
+resource_name = "camera_start"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 0.033333335, 1, 0, 1, 0, 0.93333334, 1, 0, 0, 1, 1, 1, 0, 0, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.70710677, 0, 0, 0.70710677, 1, 1, 0, 0, 0, 1)
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ukr8"]
 _data = {
 &"RESET": SubResource("Animation_fo5ed"),
 &"camera_start": SubResource("Animation_8j60k")
 }
 
-[node name="World" type="Node3D"]
+[node name="World" type="Node3D" node_paths=PackedStringArray("anim_player")]
 script = ExtResource("1_5a7ea")
+anim_player = NodePath("AnimationPlayer")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8j60k")
@@ -63,7 +64,7 @@ shadow_enabled = true
 [node name="Radio" parent="." instance=ExtResource("1_a02cp")]
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("ray")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.6)
+transform = Transform3D(1, 0, 0, 0, 0.016689673, 0.99986064, 0, -0.99986064, 0.016689673, 0, 0.6, 0.6)
 script = ExtResource("2_go701")
 ray = NodePath("Mouse")
 
