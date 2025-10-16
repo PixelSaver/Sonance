@@ -24,8 +24,12 @@ func _ready():
 		inst.play()
 		stations.append(inst)
 	static_stream.stream.loop = true
-	static_stream.play()
 	num_stations = stations.size()
+
+func _process(_delta: float) -> void:
+	if Global.state == Global.States.RADIO:
+		if not static_stream.playing:
+			static_stream.play()
 
 ## Change the 'frequency' of the radio 
 func set_frequency(freq:float, volume_offset:float=0.):
