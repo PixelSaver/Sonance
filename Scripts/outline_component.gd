@@ -1,0 +1,19 @@
+extends Node
+class_name OutlineComponent
+
+@export var outline_shader_mat : ShaderMaterial
+@export var mesh : MeshInstance3D
+
+
+func outline_parent(do:bool, _mesh:MeshInstance3D=null):
+	if _mesh:
+		if do:
+			_mesh.material_overlay = outline_shader_mat
+		else:
+			_mesh.material_overlay = null
+	else:
+		if do:
+			mesh.material_overlay = outline_shader_mat
+		else:
+			mesh.material_overlay = null
+		

@@ -26,15 +26,14 @@ func _on_knob_2():
 func _on_knob_exit():
 	#knob_hovered = null
 	pass
-	
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_action("left_click"):
 			clicked = event.pressed
 			if clicked:
-				print("Mouse down")
+				pass
 			else:
-				print("Mouse up")
 				dragging = false
 
 	if event is InputEventMouseMotion:
