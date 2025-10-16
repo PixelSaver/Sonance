@@ -7,6 +7,9 @@ func _ready() -> void:
 	Global.world_root = self
 	anim_player.play("camera_start", -1, 0.)
 	
+	if OS.is_debug_build():
+		main_to_radio()
+	
 
 func main_to_radio():
 	if Global.state != Global.States.MENU: return

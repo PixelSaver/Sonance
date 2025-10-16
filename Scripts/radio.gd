@@ -49,13 +49,13 @@ func update_knob_turn(event:InputEventMouseMotion):
 	match knob_hovered:
 		null:
 			return
-		knob1:
+		knob2:
 			tuning += (-event.relative.y + event.relative.x) * sensitivity
-			knob1.rotation.z = tuning * -0.05
+			knob2.rotation.z = tuning * -0.05
 			#TODO tween the fork
 			tuning_fork.position.x = clamp(tuning * 0.01, -.25, .25)
-		knob2:
+		knob1:
 			volume += (-event.relative.y + event.relative.x) * sensitivity
-			knob2.rotation.z = volume * -0.05
+			knob1.rotation.z = volume * -0.05
 	
 	
