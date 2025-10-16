@@ -5,7 +5,7 @@ class_name UI
 var t : Tween
 
 func _ready() -> void:
-	button.pivot_offset = button.size / 2
+	button.pivot_offset = Vector2(0, button.size.y / 2)
 	Global.game_state_changed.connect(_on_state_change)
 
 func _on_button_mouse_entered() -> void:

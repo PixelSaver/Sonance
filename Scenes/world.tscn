@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://c1ccligum3tv6" path="res://Scripts/camera_3d.gd" id="2_go701"]
 [ext_resource type="Script" uid="uid://0glrbwc75hk2" path="res://Scripts/UI.gd" id="4_8j60k"]
 [ext_resource type="Theme" uid="uid://cjatdhnf218ui" path="res://Assets/theme.tres" id="4_fo5ed"]
-[ext_resource type="PackedScene" uid="uid://bxw0h7kn5apxk" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
+[ext_resource type="PackedScene" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5ukr8"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -91,17 +91,6 @@ tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
 
-[sub_resource type="Animation" id="Animation_5ukr8"]
-resource_name = "turn_right"
-step = 0.05
-tracks/0/type = "rotation_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CamPos/Camera3D")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, -1, 1, 1, 0, -1, 0, 0.001)
-
 [sub_resource type="Animation" id="Animation_o06y3"]
 resource_name = "turn_left"
 step = 0.05
@@ -112,6 +101,17 @@ tracks/0/path = NodePath("CamPos/Camera3D")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 4.371139e-08)
+
+[sub_resource type="Animation" id="Animation_5ukr8"]
+resource_name = "turn_right"
+step = 0.05
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPos/Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, -1, 1, 1, 0, -1, 0, 0.001)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ukr8"]
 _data = {
@@ -211,7 +211,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
-text = "[font_size=100]Sonance"
+text = "[font_size=150]Sonance"
 fit_content = true
 scroll_active = false
 vertical_alignment = 1
@@ -221,7 +221,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.15
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.276
 anchor_bottom = 0.7
 grow_horizontal = 2
 grow_vertical = 2
