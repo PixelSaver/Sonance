@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://d17hg6ip2814h"]
+[gd_scene load_steps=38 format=4 uid="uid://d17hg6ip2814h"]
 
 [ext_resource type="Script" uid="uid://m8rwy7m71x24" path="res://Scripts/radio.gd" id="1_bdbpc"]
 [ext_resource type="PackedScene" uid="uid://d2u5jui2amqna" path="res://Scenes/knob.tscn" id="2_ibud7"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b862xkdi01yoc" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_metallicRoughness.png" id="10_7yf7r"]
 [ext_resource type="Script" uid="uid://dlupht8ipndfl" path="res://Scripts/outline_component.gd" id="11_5jvd1"]
 [ext_resource type="Texture2D" uid="uid://3yjurdc5tkrw" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_normal.png" id="11_lmej3"]
+[ext_resource type="AudioStream" uid="uid://cfdtirtqw4ain" path="res://Assets/Audio/am-radio-static.mp3" id="11_v8ggg"]
 
 [sub_resource type="PlaceholderMesh" id="PlaceholderMesh_clxkr"]
 
@@ -362,13 +363,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_lmej3")
 
-[node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2", "tuning_fork", "outline_component")]
+[node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2", "tuning_fork", "outline_component", "audio_man")]
 mesh = SubResource("PlaceholderMesh_clxkr")
 script = ExtResource("1_bdbpc")
 knob1 = NodePath("Knob")
 knob2 = NodePath("Knob2")
 tuning_fork = NodePath("TuningFork")
 outline_component = NodePath("OutlineComponent")
+audio_man = NodePath("AudioManager")
 
 [node name="OutlineComponent" type="Node" parent="."]
 script = ExtResource("11_5jvd1")
@@ -403,6 +405,7 @@ stations_list_json = ExtResource("4_y4nnh")
 [node name="Station" parent="AudioManager" instance=ExtResource("5_y4nnh")]
 
 [node name="Static" type="AudioStreamPlayer3D" parent="AudioManager"]
+stream = ExtResource("11_v8ggg")
 bus = &"Radio"
 
 [node name="MenuButtons" type="Node3D" parent="." node_paths=PackedStringArray("play_but")]

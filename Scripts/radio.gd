@@ -6,6 +6,7 @@ class_name Radio
 @export var sensitivity : float = 0.1
 @export var tuning_fork : RigidBody3D
 @export var outline_component : OutlineComponent
+@export var audio_man : AudioManager
 var tuning : float = 0.
 var volume : float = 1.
 var knob_hovered : RigidBody3D
@@ -66,10 +67,8 @@ func update_tuning(event_rel:Vector2):
 	tuning = clampf(tuning+(event_rel.x - event_rel.y) * sensitivity, 0., 50.)
 	knob2.rotation.z = tuning * -0.05
 	tuning_fork.position.x = lerp(-.08, .185, tuning/50.)
-	var freq = lerp(50., 160., tuning/50.)
-	print(freq)
+	audio_man.set_frequency(get_freq())
 
 func get_freq() -> float:
 	var freq = lerp(50., 160., tuning/50.)
-	print(freq)
 	return freq

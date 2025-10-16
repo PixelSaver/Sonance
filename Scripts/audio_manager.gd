@@ -1,4 +1,5 @@
 extends Node3D
+class_name AudioManager
 
 @export var static_stream : AudioStreamPlayer3D
 @export var stations_list_json : JSON
@@ -13,19 +14,24 @@ var t : Tween
 func _ready():
 	print(stations_list)
 	for i in range(stations_list.size()):
-		var inst = STATION_SCENE.instantiate()
+		var inst = STATION_SCENE.instantiate() as Station
 		add_child(inst)
 		inst.station_name = stations_list[i].station_name
 		inst.frequency = stations_list[i].frequency
 		inst.freq_range = stations_list[i].range
 		inst.stream = load(stations_list[i].stream)
+		inst.stream.loop = true
+		inst.play()
+		stations.append(inst)
 	num_stations = stations.size()
 
 ## Change the 'frequency' of the radio 
 func set_frequency(freq:float):
+	#print(freq)
 	for s in stations:
 		var dist = abs(freq - s.frequency)
 		var strength : float = clamp(1. - (dist / s.freq_range), 0., 1.)
+		print(strength)
 		s.volume_db = lerpf(-80, 0., strength)
 		static_stream.volume_db = lerpf(0., -80., strength)
 		

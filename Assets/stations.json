@@ -1,20 +1,20 @@
 [
   {
-	"station_name": "Jazz FM",
-	"frequency": 20.0,
+	"station_name": "Fur Elise",
+	"frequency": 55.0,
 	"range": 5.0,
-	"stream": "res://audio/jazz.ogg"
+	"stream": "res://Assets/Audio/fur-elise-music-box.mp3"
   },
   {
 	"station_name": "Rock Radio",
-	"frequency": 50.0,
+	"frequency": 60.0,
 	"range": 4.0,
-	"stream": "res://audio/rock.ogg"
+	"stream": "res://Assets/Audio/Infraction.mp3"
   },
   {
 	"station_name": "Talk Station",
 	"frequency": 80.0,
 	"range": 6.0,
-	"stream": "res://audio/talk.ogg"
+	"stream": "res://Assets/Audio/ultimatum-orchestra-loop.mp3"
   }
 ]
