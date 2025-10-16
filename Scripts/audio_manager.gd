@@ -31,8 +31,6 @@ func set_frequency(freq:float, volume_offset:float=0.):
 	for s in stations:
 		var dist = abs(freq - s.frequency)
 		var strength : float = clamp(1. - (dist / s.freq_range), 0., 1.)
-		print(strength)
-		s.volume_db = lerpf(-80, 0., strength)
-		static_stream.volume_db = lerpf(0., -80., strength)+volume_offset
-		print(volume_offset)
+		s.volume_db = (lerpf(0., 80., strength) * volume_offset) - 80
+		static_stream.volume_db = lerpf(0., -80., strength)
 		
