@@ -37,4 +37,6 @@ func _on_state_change(new_state:int):
 	t.set_parallel(true).set_trans(Tween.TRANS_QUINT)
 	t.tween_property(self, "modulate:a", 0, 0.3)
 	t.tween_property(button, "scale", Vector2.ONE, 0.3)
+	await t.finished
+	hide()
 		

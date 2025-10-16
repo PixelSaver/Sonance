@@ -3,6 +3,7 @@ extends Camera3D
 @export var ray : RayCast3D
 @export var canvas_target : Marker3D
 @export var control : Control
+@export var flashlight : SpotLight3D
 
 func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
@@ -11,4 +12,4 @@ func _process(_delta: float) -> void:
 	ray.global_position = from
 	ray.target_position = to
 	
-	
+	flashlight.look_at(to, Vector3.UP)
