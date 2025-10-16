@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bd6kgf6otx6mq"]
+[gd_scene load_steps=13 format=3 uid="uid://bd6kgf6otx6mq"]
 
 [ext_resource type="Script" uid="uid://c0v2r8u4qv4v5" path="res://Scripts/world.gd" id="1_5a7ea"]
 [ext_resource type="PackedScene" uid="uid://d17hg6ip2814h" path="res://Scenes/radio.tscn" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://c1ccligum3tv6" path="res://Scripts/camera_3d.gd" id="2_go701"]
+[ext_resource type="Script" uid="uid://0glrbwc75hk2" path="res://Scripts/UI.gd" id="4_8j60k"]
+[ext_resource type="Theme" uid="uid://cjatdhnf218ui" path="res://Assets/theme.tres" id="4_fo5ed"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_go701"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -122,7 +124,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 script = ExtResource("2_go701")
 ray = NodePath("Mouse")
 canvas_target = NodePath("../../Radio/Target")
-control = NodePath("../Control")
+control = NodePath("../../ui/Control")
 
 [node name="Mouse" type="RayCast3D" parent="Node3D/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18170202)
@@ -130,7 +132,9 @@ visible = false
 target_position = Vector3(0, 0, -1)
 collision_mask = 4
 
-[node name="Control" type="Control" parent="Node3D"]
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="ui" node_paths=PackedStringArray("button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -139,8 +143,58 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
 mouse_filter = 2
+theme = ExtResource("4_fo5ed")
+script = ExtResource("4_8j60k")
+button = NodePath("Button")
 
-[node name="Button" type="Button" parent="Node3D/Control"]
+[node name="Title" type="Control" parent="ui/Control"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.3
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ui/Control/Title"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[font_size=100]Sonance"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="ui/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ui/Control/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+bbcode_enabled = true
+text = "[font_size=60]Quit"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="Button2" type="Button" parent="ui/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.161
@@ -150,19 +204,24 @@ anchor_bottom = 0.606
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Node3D/Control/Button"]
+[node name="RichTextLabel" type="RichTextLabel" parent="ui/Control/Button2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 bbcode_enabled = true
-text = "[font_size=60]Heyyy"
+text = "[font_size=60]Settings"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Node3D"]
-visible = false
+[connection signal="mouse_entered" from="ui/Control/Button" to="ui/Control" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="ui/Control/Button" to="ui/Control" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="ui/Control/Button" to="ui/Control" method="_on_button_pressed"]
+[connection signal="mouse_entered" from="ui/Control/Button2" to="ui/Control" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="ui/Control/Button2" to="ui/Control" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="ui/Control/Button2" to="ui/Control" method="_on_button_pressed"]

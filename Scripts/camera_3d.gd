@@ -11,5 +11,4 @@ func _process(_delta: float) -> void:
 	ray.global_position = from
 	ray.target_position = to
 	
-	var screen_pos = unproject_position(canvas_target.global_position)
-	control.position = screen_pos
+	
