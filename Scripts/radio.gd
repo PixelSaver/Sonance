@@ -8,7 +8,7 @@ class_name Radio
 @export var outline_component : OutlineComponent
 @export var audio_man : AudioManager
 var tuning : float = 0.
-var volume : float = 1.
+var volume : float = 0.
 var knob_hovered : RigidBody3D
 var clicked = false
 var dragging = false
@@ -60,14 +60,14 @@ func update_knob_turn(event:InputEventMouseMotion):
 		knob2:
 			update_tuning(event.relative)
 		knob1:
-			volume += (-event.relative.y + event.relative.x) * sensitivity
+			volume = clampf(volume + (event.relative.x - event.relative.x) * sensitivity, -100., 100.)
 			knob1.rotation.z = volume * -0.05
 	
 func update_tuning(event_rel:Vector2):
 	tuning = clampf(tuning+(event_rel.x - event_rel.y) * sensitivity, 0., 50.)
 	knob2.rotation.z = tuning * -0.05
 	tuning_fork.position.x = lerp(-.08, .185, tuning/50.)
-	audio_man.set_frequency(get_freq())
+	audio_man.set_frequency(get_freq(), volume / .1)
 
 func get_freq() -> float:
 	var freq = lerp(50., 160., tuning/50.)
