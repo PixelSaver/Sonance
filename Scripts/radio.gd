@@ -29,6 +29,10 @@ func _on_knob_2():
 			knob2.get_node("KnobModel"))
 	knob_hovered = knob2
 func _on_knob_exit():
+	outline_component.outline_parent(false,\
+			knob1.get_node("KnobModel"))
+	outline_component.outline_parent(false,\
+			knob2.get_node("KnobModel"))
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -38,8 +42,7 @@ func _input(event: InputEvent) -> void:
 			if clicked:
 				pass
 			else:
-				outline_component.outline_parent(false,knob1.get_node("KnobModel"))
-				outline_component.outline_parent(false,knob2.get_node("KnobModel"))
+				dragging = false
 
 	if event is InputEventMouseMotion:
 		if clicked and knob_hovered:
@@ -54,12 +57,19 @@ func update_knob_turn(event:InputEventMouseMotion):
 		null:
 			return
 		knob2:
-			tuning += (-event.relative.y + event.relative.x) * sensitivity
-			knob2.rotation.z = tuning * -0.05
-			#TODO tween the fork
-			tuning_fork.position.x = clamp(tuning * 0.01, -.25, .25)
+			update_tuning(event.relative)
 		knob1:
 			volume += (-event.relative.y + event.relative.x) * sensitivity
 			knob1.rotation.z = volume * -0.05
 	
-	
+func update_tuning(event_rel:Vector2):
+	tuning = clampf(tuning+(event_rel.x - event_rel.y) * sensitivity, 0., 50.)
+	knob2.rotation.z = tuning * -0.05
+	tuning_fork.position.x = lerp(-.08, .185, tuning/50.)
+	var freq = lerp(50., 160., tuning/50.)
+	print(freq)
+
+func get_freq() -> float:
+	var freq = lerp(50., 160., tuning/50.)
+	print(freq)
+	return freq

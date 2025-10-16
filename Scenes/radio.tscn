@@ -382,6 +382,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29997504, 0.45689684, 0.18
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30147356, 0.45672613, 0.18509273)
 
 [node name="TuningFork" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.085, 0, 0)
 gravity_scale = 0.0
 
 [node name="FOrk" type="MeshInstance3D" parent="TuningFork"]
