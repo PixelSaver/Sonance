@@ -105,6 +105,9 @@ shadow_enabled = true
 [node name="Radio" parent="." groups=["World"] instance=ExtResource("1_a02cp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4038543, 0.26075035)
 
+[node name="Target" type="Marker3D" parent="Radio"]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.59183115, -0.3255912)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 deterministic = true
 libraries = {
@@ -112,14 +115,54 @@ libraries = {
 }
 
 [node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 2.3841858e-07, 0, 1, 0, -2.3841858e-07, 0, 1, 0, 0, 0.26149154)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0.26149154)
 
-[node name="Camera3D" type="Camera3D" parent="Node3D" node_paths=PackedStringArray("ray")]
+[node name="Camera3D" type="Camera3D" parent="Node3D" node_paths=PackedStringArray("ray", "canvas_target", "control")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 script = ExtResource("2_go701")
 ray = NodePath("Mouse")
+canvas_target = NodePath("../../Radio/Target")
+control = NodePath("../Control")
 
 [node name="Mouse" type="RayCast3D" parent="Node3D/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18170202)
+visible = false
 target_position = Vector3(0, 0, -1)
 collision_mask = 4
+
+[node name="Control" type="Control" parent="Node3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="Node3D/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.161
+anchor_top = 0.339
+anchor_right = 0.515
+anchor_bottom = 0.606
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Node3D/Control/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[font_size=60]Heyyy"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Node3D"]
+visible = false
