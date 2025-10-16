@@ -28,6 +28,10 @@ window/size/viewport_height=972
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
 
+[global_group]
+
+World=""
+
 [input]
 
 left_click={

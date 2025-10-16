@@ -12,3 +12,6 @@ var state : States = States.MENU :
 		if val == state: return
 		state = val
 		game_state_changed.emit(val)
+		
+# Make world root easy to access
+var world_root : WorldRoot 

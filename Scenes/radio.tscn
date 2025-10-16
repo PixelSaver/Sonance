@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d17hg6ip2814h"]
+[gd_scene load_steps=14 format=3 uid="uid://d17hg6ip2814h"]
 
 [ext_resource type="Script" uid="uid://m8rwy7m71x24" path="res://Scripts/radio.gd" id="1_bdbpc"]
 [ext_resource type="PackedScene" uid="uid://d2u5jui2amqna" path="res://Scenes/knob.tscn" id="2_ibud7"]
@@ -16,6 +16,19 @@ size = Vector3(0.05, 0.1, 0.1)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ibud7"]
 points = PackedVector3Array(0, 0.05, 0.05, 0, 0.05, -0.05, -0.025, -0.05, 0.05, 0.025, -0.05, 0.05, 0.025, -0.05, -0.05, -0.025, -0.05, -0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g5fd0"]
+albedo_color = Color(0.42419922, 0.42419922, 0.42419922, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_geon2"]
+material = SubResource("StandardMaterial3D_g5fd0")
+text = "Settings"
+font_size = 6
+
+[sub_resource type="TextMesh" id="TextMesh_3asvo"]
+material = SubResource("StandardMaterial3D_g5fd0")
+text = "Quit"
+font_size = 6
 
 [node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2", "tuning_fork")]
 mesh = SubResource("BoxMesh_6jxtu")
@@ -53,8 +66,27 @@ stations_list_json = ExtResource("4_y4nnh")
 [node name="Static" type="AudioStreamPlayer3D" parent="AudioManager"]
 bus = &"Radio"
 
-[node name="MenuButtons" type="Node3D" parent="."]
+[node name="MenuButtons" type="Node3D" parent="." node_paths=PackedStringArray("play_but", "settings_but", "quit_but")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 script = ExtResource("6_jp436")
+play_but = NodePath("Button1")
+settings_but = NodePath("Button2")
+quit_but = NodePath("Button3")
 
 [node name="Button1" parent="MenuButtons" instance=ExtResource("7_geon2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31983483, 0, 0)
+
+[node name="Button2" parent="MenuButtons" instance=ExtResource("7_geon2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012842402, 0, 0)
+
+[node name="Text" parent="MenuButtons/Button2" index="2"]
+mesh = SubResource("TextMesh_geon2")
+
+[node name="Button3" parent="MenuButtons" instance=ExtResource("7_geon2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34069842, 0, 0)
+
+[node name="Text" parent="MenuButtons/Button3" index="2"]
+mesh = SubResource("TextMesh_3asvo")
+
+[editable path="MenuButtons/Button2"]
+[editable path="MenuButtons/Button3"]

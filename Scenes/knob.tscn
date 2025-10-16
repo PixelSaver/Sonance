@@ -9,6 +9,7 @@ radius = 0.05
 radial_steps = 6
 sections = 2
 section_length = 0.05
+section_rings = 5
 curve = SubResource("Curve_6jxtu")
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4udn8"]
