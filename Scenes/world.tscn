@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://c1ccligum3tv6" path="res://Scripts/camera_3d.gd" id="2_go701"]
 [ext_resource type="Script" uid="uid://0glrbwc75hk2" path="res://Scripts/UI.gd" id="4_8j60k"]
 [ext_resource type="Theme" uid="uid://cjatdhnf218ui" path="res://Assets/theme.tres" id="4_fo5ed"]
-[ext_resource type="PackedScene" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
+[ext_resource type="PackedScene" uid="uid://bxw0h7kn5apxk" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5ukr8"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -21,7 +21,6 @@ sky = SubResource("Sky_o06y3")
 ambient_light_source = 3
 tonemap_mode = 2
 glow_enabled = true
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.2867
 
 [sub_resource type="Animation" id="Animation_fo5ed"]
