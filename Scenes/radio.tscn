@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://d17hg6ip2814h"]
+[gd_scene load_steps=11 format=3 uid="uid://d17hg6ip2814h"]
 
 [ext_resource type="Script" uid="uid://m8rwy7m71x24" path="res://Scripts/radio.gd" id="1_bdbpc"]
 [ext_resource type="PackedScene" uid="uid://d2u5jui2amqna" path="res://Scenes/knob.tscn" id="2_ibud7"]
 [ext_resource type="Script" uid="uid://d4a5qbongjnde" path="res://Scripts/audio_manager.gd" id="3_ibud7"]
 [ext_resource type="JSON" path="res://Assets/stations.json" id="4_y4nnh"]
 [ext_resource type="PackedScene" uid="uid://bndw2cxa7hrwg" path="res://Scenes/station.tscn" id="5_y4nnh"]
+[ext_resource type="Script" uid="uid://b7yp1cs1gdnsa" path="res://Scripts/menu_buttons.gd" id="6_jp436"]
+[ext_resource type="PackedScene" uid="uid://bq4r8pe7w6yr5" path="res://Scenes/radio_menu_button.tscn" id="7_geon2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_6jxtu"]
 size = Vector3(1, 0.6, 0.5)
@@ -50,3 +52,9 @@ stations_list_json = ExtResource("4_y4nnh")
 
 [node name="Static" type="AudioStreamPlayer3D" parent="AudioManager"]
 bus = &"Radio"
+
+[node name="MenuButtons" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("6_jp436")
+
+[node name="Button1" parent="MenuButtons" instance=ExtResource("7_geon2")]

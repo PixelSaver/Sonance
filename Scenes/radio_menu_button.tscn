@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bq4r8pe7w6yr5"]
+
+[ext_resource type="Script" uid="uid://cwwv24t1onab6" path="res://Scripts/radio_top_button.gd" id="1_g5fd0"]
+
+[sub_resource type="Curve" id="Curve_y4nnh"]
+_data = [Vector2(0, 0.7960607), 0.0, 0.20393932, 0, 1, Vector2(1, 1), 0.20393932, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_jp436"]
+radius = 0.1
+radial_steps = 4
+sections = 2
+section_length = 0.03
+section_rings = 1
+curve = SubResource("Curve_y4nnh")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g5fd0"]
+size = Vector3(0.4, 0.1, 0.15)
+
+[node name="Button1" type="RigidBody3D"]
+gravity_scale = 0.0
+script = ExtResource("1_g5fd0")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+
+[node name="Button" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+mesh = SubResource("TubeTrailMesh_jp436")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+shape = SubResource("BoxShape3D_g5fd0")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
