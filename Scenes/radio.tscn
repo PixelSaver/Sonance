@@ -421,6 +421,7 @@ visible = false
 
 [node name="Table" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.311937, 0.95010287, 4.1530317e-08, -8.3987494e-16, -4.371139e-08, 1, 0.95010287, -0.311937, -1.3635193e-08, 0, 0, 0)
+visible = false
 mesh = SubResource("ArrayMesh_v8ggg")
 skeleton = NodePath("")
 

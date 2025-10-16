@@ -1,23 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bd6kgf6otx6mq"]
+[gd_scene load_steps=11 format=3 uid="uid://bd6kgf6otx6mq"]
 
 [ext_resource type="Script" uid="uid://c0v2r8u4qv4v5" path="res://Scripts/world.gd" id="1_5a7ea"]
 [ext_resource type="PackedScene" uid="uid://d17hg6ip2814h" path="res://Scenes/radio.tscn" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://c1ccligum3tv6" path="res://Scripts/camera_3d.gd" id="2_go701"]
 [ext_resource type="Script" uid="uid://0glrbwc75hk2" path="res://Scripts/UI.gd" id="4_8j60k"]
 [ext_resource type="Theme" uid="uid://cjatdhnf218ui" path="res://Assets/theme.tres" id="4_fo5ed"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_go701"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_5a7ea"]
-sky_material = SubResource("ProceduralSkyMaterial_go701")
-
-[sub_resource type="Environment" id="Environment_8j60k"]
-background_mode = 2
-sky = SubResource("Sky_5a7ea")
-tonemap_mode = 2
-glow_enabled = true
+[ext_resource type="PackedScene" uid="uid://bxw0h7kn5apxk" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
 
 [sub_resource type="Animation" id="Animation_fo5ed"]
 length = 0.001
@@ -97,13 +85,14 @@ _data = {
 script = ExtResource("1_5a7ea")
 anim_player = NodePath("AnimationPlayer")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_8j60k")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.7071067, 0.6123725, -0.35355344, 2.7805946e-08, 0.49999994, 0.86602545, 0.7071069, -0.6123724, 0.35355327, 0, 0, 0)
-visible = false
+transform = Transform3D(0.7297156, -0.4472083, 0.51722324, 0.3135652, 0.89109015, 0.32807803, -0.6076117, -0.077220485, 0.7904713, 0, 0, 0)
+light_color = Color(0.4159408, 0.759386, 0.86058676, 1)
+light_energy = 2.376
+light_specular = 3.293
 shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_blend_splits = true
 
 [node name="Radio" parent="." groups=["World"] instance=ExtResource("1_a02cp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4038543, 0.26075035)
@@ -137,12 +126,13 @@ collision_mask = 4
 [node name="SpotLight3D" type="SpotLight3D" parent="Node3D/Camera3D"]
 light_color = Color(0.92151546, 0.9407513, 0.6541974, 1)
 light_energy = 1.255
+light_volumetric_fog_energy = 5.229
 shadow_enabled = true
 shadow_blur = 1.575
 spot_range = 3.736
-spot_attenuation = -0.53
-spot_angle = 55.89
-spot_angle_attenuation = 3.0314333
+spot_attenuation = -0.59
+spot_angle = 56.46
+spot_angle_attenuation = 2.2973943
 
 [node name="ui" type="CanvasLayer" parent="."]
 
@@ -230,6 +220,25 @@ fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HouseModel" parent="." instance=ExtResource("6_5ukr8")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -1.7873175, -1.8863838, 3.7571502)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="HouseModel"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.66106915, 1.143892, 0.16040462)
+light_color = Color(0.9873648, 0.80288464, 0.3823735, 1)
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 7.616
+omni_attenuation = 1.536
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="HouseModel"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.6335776, 1.7058536, -2.636243)
+light_color = Color(0.9873648, 0.80288464, 0.3823735, 1)
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 7.616
+omni_attenuation = 1.536
 
 [connection signal="mouse_entered" from="ui/Control/Button" to="ui/Control" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="ui/Control/Button" to="ui/Control" method="_on_button_mouse_exited"]
