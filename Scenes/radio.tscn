@@ -1,7 +1,8 @@
-[gd_scene load_steps=35 format=4 uid="uid://d17hg6ip2814h"]
+[gd_scene load_steps=37 format=4 uid="uid://d17hg6ip2814h"]
 
 [ext_resource type="Script" uid="uid://m8rwy7m71x24" path="res://Scripts/radio.gd" id="1_bdbpc"]
 [ext_resource type="PackedScene" uid="uid://d2u5jui2amqna" path="res://Scenes/knob.tscn" id="2_ibud7"]
+[ext_resource type="Material" uid="uid://bp63yb4vgmgck" path="res://Assets/outline_material.tres" id="3_7yf7r"]
 [ext_resource type="Script" uid="uid://d4a5qbongjnde" path="res://Scripts/audio_manager.gd" id="3_ibud7"]
 [ext_resource type="JSON" path="res://Assets/stations.json" id="4_y4nnh"]
 [ext_resource type="PackedScene" uid="uid://bndw2cxa7hrwg" path="res://Scenes/station.tscn" id="5_y4nnh"]
@@ -10,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dd8aonr1mxmsa" path="res://Assets/radio_surgery/vintage_radio_surgery.glb" id="8_clxkr"]
 [ext_resource type="Texture2D" uid="uid://5b26x8brtaal" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_baseColor.png" id="9_5jvd1"]
 [ext_resource type="Texture2D" uid="uid://b862xkdi01yoc" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_metallicRoughness.png" id="10_7yf7r"]
+[ext_resource type="Script" uid="uid://dlupht8ipndfl" path="res://Scripts/outline_component.gd" id="11_5jvd1"]
 [ext_resource type="Texture2D" uid="uid://3yjurdc5tkrw" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_normal.png" id="11_lmej3"]
 
 [sub_resource type="PlaceholderMesh" id="PlaceholderMesh_clxkr"]
@@ -360,12 +362,18 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_lmej3")
 
-[node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2", "tuning_fork")]
+[node name="Radio" type="MeshInstance3D" node_paths=PackedStringArray("knob1", "knob2", "tuning_fork", "outline_component")]
 mesh = SubResource("PlaceholderMesh_clxkr")
 script = ExtResource("1_bdbpc")
 knob1 = NodePath("Knob")
 knob2 = NodePath("Knob2")
 tuning_fork = NodePath("TuningFork")
+outline_component = NodePath("OutlineComponent")
+
+[node name="OutlineComponent" type="Node" parent="."]
+script = ExtResource("11_5jvd1")
+outline_shader_mat = ExtResource("3_7yf7r")
+metadata/_custom_type_script = "uid://dlupht8ipndfl"
 
 [node name="Knob" parent="." instance=ExtResource("2_ibud7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29997504, 0.45689684, 0.1835569)

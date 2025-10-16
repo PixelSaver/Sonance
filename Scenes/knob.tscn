@@ -1,10 +1,8 @@
-[gd_scene load_steps=10 format=4 uid="uid://d2u5jui2amqna"]
+[gd_scene load_steps=8 format=4 uid="uid://d2u5jui2amqna"]
 
 [ext_resource type="Texture2D" uid="uid://5b26x8brtaal" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_baseColor.png" id="1_ps01g"]
 [ext_resource type="Texture2D" uid="uid://b862xkdi01yoc" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_metallicRoughness.png" id="2_il514"]
 [ext_resource type="Texture2D" uid="uid://3yjurdc5tkrw" path="res://Assets/radio_surgery/vintage_radio_surgery_phong1SG_normal.png" id="3_tv0eb"]
-[ext_resource type="Script" uid="uid://dlupht8ipndfl" path="res://Scripts/outline_component.gd" id="4_tv0eb"]
-[ext_resource type="Material" uid="uid://bp63yb4vgmgck" path="res://Assets/outline_material.tres" id="5_kb4i6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05oah"]
 resource_name = "phong1SG"
@@ -62,7 +60,7 @@ points = PackedVector3Array(0.18695, -0.374384, 0.45628145, 0.18695, -0.3685472,
 collision_layer = 5
 gravity_scale = 0.0
 
-[node name="Knob1Model" type="MeshInstance3D" parent="."]
+[node name="KnobModel" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0.299, -0.457, -0.183)
 mesh = SubResource("ArrayMesh_kb4i6")
 skeleton = NodePath("")
@@ -70,8 +68,3 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0.299, -0.457, -0.183)
 shape = SubResource("ConvexPolygonShape3D_ps01g")
-
-[node name="OutlineComponent" type="Node" parent="." node_paths=PackedStringArray("mesh")]
-script = ExtResource("4_tv0eb")
-outline_shader_mat = ExtResource("5_kb4i6")
-mesh = NodePath("")

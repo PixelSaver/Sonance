@@ -5,6 +5,7 @@ class_name Radio
 @export var knob2 : RigidBody3D
 @export var sensitivity : float = 0.1
 @export var tuning_fork : RigidBody3D
+@export var outline_component : OutlineComponent
 var tuning : float = 0.
 var volume : float = 1.
 var knob_hovered : RigidBody3D
@@ -19,12 +20,15 @@ func _ready():
 	
 func _on_knob_1():
 	if dragging: return
+	outline_component.outline_parent(true,\
+			knob1.get_node("KnobModel"))
 	knob_hovered = knob1
 func _on_knob_2():
 	if dragging: return
+	outline_component.outline_parent(true,\
+			knob2.get_node("KnobModel"))
 	knob_hovered = knob2
 func _on_knob_exit():
-	#knob_hovered = null
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -34,7 +38,8 @@ func _input(event: InputEvent) -> void:
 			if clicked:
 				pass
 			else:
-				dragging = false
+				outline_component.outline_parent(false,knob1.get_node("KnobModel"))
+				outline_component.outline_parent(false,knob2.get_node("KnobModel"))
 
 	if event is InputEventMouseMotion:
 		if clicked and knob_hovered:
