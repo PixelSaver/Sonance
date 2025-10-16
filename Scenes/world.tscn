@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bd6kgf6otx6mq"]
+[gd_scene load_steps=16 format=3 uid="uid://bd6kgf6otx6mq"]
 
 [ext_resource type="Script" uid="uid://c0v2r8u4qv4v5" path="res://Scripts/world.gd" id="1_5a7ea"]
 [ext_resource type="PackedScene" uid="uid://d17hg6ip2814h" path="res://Scenes/radio.tscn" id="1_a02cp"]
@@ -30,14 +30,14 @@ step = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Node3D")
+tracks/0/path = NodePath("CamPos")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.26149154)
 tracks/1/type = "position_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Node3D/Camera3D")
+tracks/1/path = NodePath("CamPos/Camera3D")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 1)
@@ -47,14 +47,14 @@ resource_name = "camera_start"
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = false
-tracks/0/path = NodePath("Node3D/Camera3D")
+tracks/0/path = NodePath("CamPos/Camera3D")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 0.033333335, 1, 0, 1, 0, 0.93333334, 1, 0, 0, 1, 1, 1, 0, 0, 1)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = false
-tracks/1/path = NodePath("Node3D/Camera3D")
+tracks/1/path = NodePath("CamPos/Camera3D")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, -0.70710677, 0, 0, 0.70710677, 1, 1, 0, 0, 0, 1)
@@ -65,37 +65,61 @@ step = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Node3D")
+tracks/0/path = NodePath("CamPos")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.26149154)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Node3D")
+tracks/1/path = NodePath("CamPos")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 1, 0, -7.54979e-08, 1, 1, 0, 1.1920929e-07, 0, 1)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Node3D/Camera3D")
+tracks/2/path = NodePath("CamPos/Camera3D")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.2, 0.75, 0.5, 1, 0, 0.2, 1, 1, 1, 0, 0.15, 0.7)
 tracks/3/type = "rotation_3d"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Node3D/Camera3D")
+tracks/3/path = NodePath("CamPos/Camera3D")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_5ukr8"]
+resource_name = "turn_right"
+step = 0.05
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPos/Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, -1, 1, 1, 0, -1, 0, 0.001)
+
+[sub_resource type="Animation" id="Animation_o06y3"]
+resource_name = "turn_left"
+step = 0.05
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPos/Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 4.371139e-08)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ukr8"]
 _data = {
 &"RESET": SubResource("Animation_fo5ed"),
 &"camera_start": SubResource("Animation_8j60k"),
-&"camera_start_2": SubResource("Animation_5a7ea")
+&"camera_start_2": SubResource("Animation_5a7ea"),
+&"turn_left": SubResource("Animation_o06y3"),
+&"turn_right": SubResource("Animation_5ukr8")
 }
 
 [node name="World" type="Node3D" node_paths=PackedStringArray("anim_player")]
@@ -126,10 +150,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_5ukr8")
 }
 
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0.26149154)
+[node name="CamPos" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.26149154)
 
-[node name="Camera3D" type="Camera3D" parent="Node3D" node_paths=PackedStringArray("ray", "canvas_target", "control", "flashlight")]
+[node name="Camera3D" type="Camera3D" parent="CamPos" node_paths=PackedStringArray("ray", "canvas_target", "control", "flashlight")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 script = ExtResource("2_go701")
 ray = NodePath("Mouse")
@@ -137,16 +161,17 @@ canvas_target = NodePath("../../Radio/Target")
 control = NodePath("../../ui/Control")
 flashlight = NodePath("SpotLight3D")
 
-[node name="Mouse" type="RayCast3D" parent="Node3D/Camera3D"]
+[node name="Mouse" type="RayCast3D" parent="CamPos/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18170202)
 visible = false
 target_position = Vector3(0, 0, -1)
 collision_mask = 4
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Node3D/Camera3D"]
+[node name="SpotLight3D" type="SpotLight3D" parent="CamPos/Camera3D"]
 light_color = Color(0.92151546, 0.9407513, 0.6541974, 1)
 light_energy = 1.255
 light_volumetric_fog_energy = 0.0
+light_specular = 0.0
 shadow_enabled = true
 shadow_blur = 1.575
 spot_range = 3.736
