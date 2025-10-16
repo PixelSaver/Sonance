@@ -23,14 +23,16 @@ func _ready():
 		inst.stream.loop = true
 		inst.play()
 		stations.append(inst)
+	static_stream.stream.loop = true
+	static_stream.play()
 	num_stations = stations.size()
 
 ## Change the 'frequency' of the radio 
 func set_frequency(freq:float, volume_offset:float=0.):
-	#print(freq)
 	for s in stations:
 		var dist = abs(freq - s.frequency)
 		var strength : float = clamp(1. - (dist / s.freq_range), 0., 1.)
-		s.volume_db = (lerpf(0., 80., strength) * volume_offset) - 80
-		static_stream.volume_db = lerpf(0., -80., strength)
-		
+		var vol = (lerpf(0., 80., strength) * volume_offset) - 80
+		s.volume_db = vol
+		static_stream.volume_db = (lerpf(80., 0., strength) * volume_offset) - 80.
+	print(volume_offset)

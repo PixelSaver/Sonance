@@ -63,7 +63,6 @@ func update_knob_turn(event:InputEventMouseMotion):
 			update_tuning(event.relative)
 		knob1:
 			volume = clampf(volume + (event.relative.x - event.relative.y) * sensitivity, -30., 50.)
-			print(volume)
 			knob1.rotation.z = volume * -0.05
 			audio_man.set_frequency(get_freq(), (volume+50.) / 50.)
 	
@@ -74,5 +73,6 @@ func update_tuning(event_rel:Vector2):
 	audio_man.set_frequency(get_freq(), (volume+50.) / 50.)
 
 func get_freq() -> float:
-	var freq = lerp(50., 160., tuning/50.)
+	var freq = ease(tuning/50., 2.0)
+	freq = lerp(50., 160., freq)
 	return freq
