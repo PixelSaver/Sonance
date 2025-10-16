@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bd6kgf6otx6mq"]
+[gd_scene load_steps=14 format=3 uid="uid://bd6kgf6otx6mq"]
 
 [ext_resource type="Script" uid="uid://c0v2r8u4qv4v5" path="res://Scripts/world.gd" id="1_5a7ea"]
 [ext_resource type="PackedScene" uid="uid://d17hg6ip2814h" path="res://Scenes/radio.tscn" id="1_a02cp"]
@@ -6,6 +6,23 @@
 [ext_resource type="Script" uid="uid://0glrbwc75hk2" path="res://Scripts/UI.gd" id="4_8j60k"]
 [ext_resource type="Theme" uid="uid://cjatdhnf218ui" path="res://Assets/theme.tres" id="4_fo5ed"]
 [ext_resource type="PackedScene" uid="uid://bxw0h7kn5apxk" path="res://Scenes/house_model.tscn" id="6_5ukr8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5ukr8"]
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(0.19414508, 0.18639508, 0.17739508, 1)
+ground_horizon_color = Color(0.19414508, 0.18639508, 0.17739508, 1)
+
+[sub_resource type="Sky" id="Sky_o06y3"]
+sky_material = SubResource("ProceduralSkyMaterial_5ukr8")
+
+[sub_resource type="Environment" id="Environment_k7acu"]
+background_mode = 2
+sky = SubResource("Sky_o06y3")
+ambient_light_source = 3
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.2867
 
 [sub_resource type="Animation" id="Animation_fo5ed"]
 length = 0.001
@@ -65,7 +82,7 @@ tracks/2/enabled = true
 tracks/2/path = NodePath("Node3D/Camera3D")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
-tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.2, 0.75, 0.5, 1, 0, 0.2, 1, 1, 1, 0, 0.15, 0.55)
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.2, 0.75, 0.5, 1, 0, 0.2, 1, 1, 1, 0, 0.15, 0.7)
 tracks/3/type = "rotation_3d"
 tracks/3/imported = false
 tracks/3/enabled = true
@@ -84,6 +101,9 @@ _data = {
 [node name="World" type="Node3D" node_paths=PackedStringArray("anim_player")]
 script = ExtResource("1_5a7ea")
 anim_player = NodePath("AnimationPlayer")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_k7acu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.7297156, -0.4472083, 0.51722324, 0.3135652, 0.89109015, 0.32807803, -0.6076117, -0.077220485, 0.7904713, 0, 0, 0)
@@ -126,7 +146,7 @@ collision_mask = 4
 [node name="SpotLight3D" type="SpotLight3D" parent="Node3D/Camera3D"]
 light_color = Color(0.92151546, 0.9407513, 0.6541974, 1)
 light_energy = 1.255
-light_volumetric_fog_energy = 5.229
+light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 shadow_blur = 1.575
 spot_range = 3.736
@@ -228,6 +248,8 @@ transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -1.7
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.66106915, 1.143892, 0.16040462)
 light_color = Color(0.9873648, 0.80288464, 0.3823735, 1)
 light_energy = 0.2
+light_volumetric_fog_energy = 0.5
+light_bake_mode = 1
 shadow_enabled = true
 omni_range = 7.616
 omni_attenuation = 1.536
@@ -236,6 +258,18 @@ omni_attenuation = 1.536
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.6335776, 1.7058536, -2.636243)
 light_color = Color(0.9873648, 0.80288464, 0.3823735, 1)
 light_energy = 0.2
+light_volumetric_fog_energy = 0.5
+light_bake_mode = 1
+shadow_enabled = true
+omni_range = 7.616
+omni_attenuation = 1.536
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="HouseModel"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.6525395, 1.7058536, -2.636243)
+light_color = Color(0.9873648, 0.80288464, 0.3823735, 1)
+light_energy = 0.2
+light_volumetric_fog_energy = 0.5
+light_bake_mode = 1
 shadow_enabled = true
 omni_range = 7.616
 omni_attenuation = 1.536
