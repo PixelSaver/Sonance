@@ -7,6 +7,7 @@ class_name Radio
 @export var tuning_fork : RigidBody3D
 @export var outline_component : OutlineComponent
 @export var audio_man : AudioManager
+var tuning_fork_target : float = -.08
 var tuning : float = 0.
 var volume : float = 0.
 var knob_hovered : RigidBody3D
@@ -50,7 +51,8 @@ func _input(event: InputEvent) -> void:
 			dragging = true
 		update_knob_turn(event as InputEventMouseMotion)
 	
-
+func _process(delta: float) -> void:
+	tuning_fork.position.x = lerp(tuning_fork.position.x, tuning_fork_target, delta*10)
 
 func update_knob_turn(event:InputEventMouseMotion):
 	if not dragging: return
@@ -68,7 +70,7 @@ func update_knob_turn(event:InputEventMouseMotion):
 func update_tuning(event_rel:Vector2):
 	tuning = clampf(tuning+(event_rel.x - event_rel.y) * sensitivity, 0., 50.)
 	knob2.rotation.z = tuning * -0.05
-	tuning_fork.position.x = lerp(-.08, .185, tuning/50.)
+	tuning_fork_target = lerp(-.08, .185, tuning/50.)
 	audio_man.set_frequency(get_freq(), (volume+50.) / 50.)
 
 func get_freq() -> float:
