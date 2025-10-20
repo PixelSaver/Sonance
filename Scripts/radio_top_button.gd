@@ -3,6 +3,7 @@ class_name RadioMenuButton
 
 signal pressed()
 @export var outline_component : OutlineComponent
+@export var mesh : MeshInstance3D
 var og_rotation : Vector3
 var og_pos : Vector3
 var t : Tween
@@ -40,9 +41,9 @@ func unpress():
 	
 
 func _on_mouse_entered():
-	outline_component.outline_parent(true)
+	outline_component.outline_parent(true, mesh)
 	hovered = true
 
 func _on_mouse_exited() -> void:
-	outline_component.outline_parent(false)
+	outline_component.outline_parent(false, mesh)
 	hovered = false

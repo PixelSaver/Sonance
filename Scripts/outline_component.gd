@@ -10,6 +10,7 @@ func outline_parent(do:bool, _mesh:MeshInstance3D=null):
 		if do:
 			print(_mesh)
 			_mesh.material_overlay = outline_shader_mat
+			print(_mesh.material_overlay)
 		else:
 			_mesh.material_overlay = null
 	else:
