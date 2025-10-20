@@ -84,7 +84,7 @@ Don't get caught up on one bug. Take the easy way out. STOP TRYING TO EXPORT TO 
 ### Showcase
 Since the project just doesn't work in the web for some weird reason (`Failed to execute 'createBuffer' on 'BaseAudioContext': The number of frames provided (0) is less than or equal to the minimum bound (0).`) so heres a vid to showcase the (limited) things available
 <details>
-  <summary><strong>Main Menu</strong></summary>
+  <summary><strong>Show me!</strong></summary>
   <img src="Media/showcase.mp4" alt="Showcase Video">
 </details>
 
