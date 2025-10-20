@@ -83,13 +83,11 @@ Don't get caught up on one bug. Take the easy way out. STOP TRYING TO EXPORT TO 
 
 ### Showcase
 Since the project just doesn't work in the web for some weird reason (`Failed to execute 'createBuffer' on 'BaseAudioContext': The number of frames provided (0) is less than or equal to the minimum bound (0).`) so heres a vid to showcase the (limited) things available
-<details>
-  <summary><strong>Show me!</strong></summary>
-  <video controls width="640" muted autoplay>
-    <source src="Media/showcase.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</details>
+
+
+https://github.com/user-attachments/assets/164741ab-2c63-4f9c-abd0-6463b656788c
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
