@@ -84,7 +84,11 @@ Don't get caught up on one bug. Take the easy way out. STOP TRYING TO EXPORT TO 
 ### Showcase
 Since the project just doesn't work in the web for some weird reason (`Failed to execute 'createBuffer' on 'BaseAudioContext': The number of frames provided (0) is less than or equal to the minimum bound (0).`) so heres a vid to showcase the (limited) things available
 <details>
-  <video src="Media/showcase.mp4" controls width="640"></video>
+  <summary><strong>Show me!</strong></summary>
+  <video controls width="640" muted autoplay>
+    <source src="Media/showcase.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> 
@@ -100,7 +104,6 @@ Since the project just doesn't work in the web for some weird reason (`Failed to
 This section should list any major frameworks/libraries used to bootstrap your project.
 
 * [![Godot][Godot 4.4]][Godot-url]
-* [ShaderToy](https://www.shadertoy.com) for shaders
 <!--
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
