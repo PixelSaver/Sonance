@@ -81,10 +81,11 @@ Super simple radio simulator which plays music depending on the frequency of the
 Don't get caught up on one bug. Take the easy way out. STOP TRYING TO EXPORT TO WEB BECAUSE THE STUPID AUDIO FILES WONT WORK RAHHHH.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Screenshots
+### Showcase
+Since the project just doesn't work in the web for some weird reason (`Failed to execute 'createBuffer' on 'BaseAudioContext': The number of frames provided (0) is less than or equal to the minimum bound (0).`) so heres a vid to showcase the (limited) things available
 <details>
   <summary><strong>Main Menu</strong></summary>
-  <img src="Media/main_menu.png" alt="Screenshot of the main menu of my game">
+  <img src="Media/showcase.mp4" alt="Showcase Video">
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> 
