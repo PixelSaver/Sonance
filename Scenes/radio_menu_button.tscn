@@ -69,6 +69,7 @@ mesh = NodePath("Power")
 
 [node name="Power" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, -1, -4.3711385e-08, -4.3711392e-08, -4.371139e-08, -4.3711392e-08, 1, 0.3, -0.345, -0.586)
+material_overlay = ExtResource("7_cbma0")
 mesh = SubResource("ArrayMesh_cbma0")
 skeleton = NodePath("")
 

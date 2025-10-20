@@ -5,7 +5,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_jfjby")
-shader_parameter/depth_threshold = 0.215
-shader_parameter/depth_artifact_correction_coef = 2.0
+shader_parameter/depth_threshold = 0.011
+shader_parameter/depth_artifact_correction_coef = 6.55
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 shader_parameter/outline_thickness = 5.0

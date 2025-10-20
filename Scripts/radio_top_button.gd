@@ -41,9 +41,9 @@ func unpress():
 	
 
 func _on_mouse_entered():
-	outline_component.outline_parent(true, mesh)
+	outline_component.outline_parent(true)
 	hovered = true
 
 func _on_mouse_exited() -> void:
-	outline_component.outline_parent(false, mesh)
+	outline_component.outline_parent(false)
 	hovered = false

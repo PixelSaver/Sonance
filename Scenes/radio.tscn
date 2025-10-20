@@ -372,10 +372,6 @@ tuning_fork = NodePath("TuningFork")
 outline_component = NodePath("OutlineComponent")
 audio_man = NodePath("AudioManager")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
-
 [node name="OutlineComponent" type="Node" parent="."]
 script = ExtResource("11_5jvd1")
 outline_shader_mat = ExtResource("3_7yf7r")
@@ -415,10 +411,10 @@ bus = &"Radio"
 [node name="MenuButtons" type="Node3D" parent="." node_paths=PackedStringArray("play_but")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 script = ExtResource("6_jp436")
-play_but = NodePath("Button1")
+play_but = NodePath("Button4")
 
-[node name="Button1" parent="MenuButtons" instance=ExtResource("7_geon2")]
-transform = Transform3D(1, 4.3711378e-08, 1.17124275e-08, -1.171243e-08, 5.9604645e-08, 1, 4.3711378e-08, -1, 5.9604645e-08, -0.30015075, 0.2861948, -0.34468147)
+[node name="Button4" parent="MenuButtons" instance=ExtResource("7_geon2")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.3, 0.286, -0.34)
 
 [node name="vintage_radio_surgery" parent="." instance=ExtResource("8_clxkr")]
 visible = false

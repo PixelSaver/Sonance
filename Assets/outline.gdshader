@@ -77,6 +77,7 @@ void fragment() {
 
     if (edge_strength > depth_threshold) {
         ALBEDO = outline_color;
+		ALPHA = .5;
         has_outline = 1.0;
     }
 
